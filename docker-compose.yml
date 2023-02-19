@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  bsuirigi:
+    image: bsuirigi
+    build:
+      context: .
+      dockerfile: ./Dockerfile
