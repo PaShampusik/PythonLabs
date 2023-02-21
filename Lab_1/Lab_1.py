@@ -1,3 +1,7 @@
+import random
+
+
+
 print("Hello World")
 
 signs = ["+", "-", "/", "*"]
@@ -38,5 +42,14 @@ while True:
     except ValueError:
         print("Wrong input!")
         continue
+
+nums = []
+
+for _ in range(20):
+    nums.append(random.randint(0, 100))
+
+print("Not processed list of numbers:", nums)
+
+print("Processed list of nums:", list(filter(lambda num : num % 2 == 0, nums)))
 
 print("Program ended.")
