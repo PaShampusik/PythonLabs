@@ -1,10 +1,13 @@
 import random
 
 
+#first part of the program
 
 print("Hello World")
 
-signs = ["+", "-", "/", "*"]
+signs = { "*" : ["multy", "mul", "*", "m"], "/" : ["div", "divide", "d", "/"], "+" : ["addition", "add", "+", "a"], "-" : ["sub", "substraction", "-", "s"]}
+
+#second part of the program
 
 def calc(a, b, operation):
     if operation == "-":
@@ -22,13 +25,16 @@ while True:
 
         try:                 
             b = float(str(input("Enter second argument: ")))
-            operation = input("Enter operation(+, -, /, *): ")
+            operation = input("Enter odoperation(+, -, /, *): ")
 
-            if operation in signs:
-                print(calc(float(a), int(b), operation))
-            else:
+            done = False
+            for key, value in signs.items():
+                if operation in value:
+                    print(calc(float(a), int(b), key))
+                    done = True
+            if done == False:
                 print("Wrong input!")
-                continue
+                
 
             answer = input("Wanna calculate more(Y/n)?")
             
@@ -42,6 +48,9 @@ while True:
     except ValueError:
         print("Wrong input!")
         continue
+
+
+#third part of the program
 
 nums = []
 
