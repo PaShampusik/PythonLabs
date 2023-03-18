@@ -5,7 +5,7 @@ import os
 def print_text():
     """Prints the text in the file"""
 
-    os.chdir(r"D:\src\Python_labs\Lab_2")
+    os.chdir(r"D:\src\Python_labs\Lab_2\users")
     f = open("text.txt", "r", encoding="utf-8")
 
     text = f.read()
@@ -29,8 +29,7 @@ def amount_of_nondec_sentences() -> int:
 
     Declarative sentence is a sentence ending with '.' or '...' separators."""
 
-    os.chdir(r"D:\src\Python_labs\Lab_2")
-    f = open("text.txt", "r", encoding="utf-8")
+    f = open(os.path.join(os.getcwd(), "text.txt"), "r", encoding="utf-8")
 
     text = f.read()
     pattern = r"(?<!\.[A-Z]{1})(?<!\s[A-Z]{1})(?<!Prof)(?<!Dr)(?<!Ms)(?<!Mss)(?<!Mr)(?<!Mrs)(\!\?|\?\!|\!+|\?+|\;+)(?=\s[A-Z]+|\n|\t|\s*$|\d+)"
@@ -41,8 +40,7 @@ def amount_of_nondec_sentences() -> int:
 def average_length_of_sentence() -> int:
     """Get the average legth of sentence in the text"""
 
-    os.chdir(r"D:\src\Python_labs\Lab_2")
-    f = open("text.txt", "r", encoding="utf-8")
+    f = open(os.path.join(os.getcwd(), "text.txt"), "r", encoding="utf-8")
 
     text = f.read()
     pattern = r"(?<!\.[A-Z]{1})(?<!\s[A-Z]{1})(?<!Prof)(?<!Dr)(?<!Ms)(?<!Mss)(?<!Mr)(?<!Mrs)(\.+|\!\?|\?\!|\!+|\?+|\;+)(?=\s[A-Z]+|\n|\t|\s*$|\d+)"
@@ -69,8 +67,7 @@ def average_length_of_sentence() -> int:
 def average_length_of_word() -> int:
     """Get the average legth of word in the text"""
 
-    os.chdir(r"D:\src\Python_labs\Lab_2")
-    f = open("text.txt", "r", encoding="utf-8")
+    f = open(os.path.join(os.getcwd(), "text.txt"), "r", encoding="utf-8")
 
     text = f.read()
     pattern = r"(\.+|\!+|\?+|\,+|\s+)\s*"
@@ -101,8 +98,7 @@ def average_length_of_word() -> int:
 def top_K_N_grams(k=10, n=4) -> dict:
     """Top-K repeated N-grams in the text"""
 
-    os.chdir(r"D:\src\Python_labs\Lab_2")
-    f = open("text.txt", "r", encoding="utf-8")
+    f = open(os.path.join(os.getcwd(), "text.txt"), "r", encoding="utf-8")
 
     text = f.read()
     pattern = r"(\**\!*\,*\.*\;*\!*\?*\**\-*\’*\”*\s+\“*|\-*\”*\**\!*\,*\.*\?*\’*\”*$|\,*\!*\.*\-+)"
@@ -112,28 +108,28 @@ def top_K_N_grams(k=10, n=4) -> dict:
     for i in match:
         if (
             i == None
-            or i.__contains__(".")
-            or i.__contains__("...")
-            or i.__contains__("!")
-            or i.__contains__("-")
-            or i.__contains__("?")
-            or i.__contains__("!?")
-            or i.__contains__("?!")
-            or i.__contains__(".")
-            or i.__contains__("!")
-            or i.__contains__("?")
-            or i.__contains__(",")
-            or i.__contains__(",")
-            or i.__contains__("\n")
-            or i.__contains__("\t")
-            or i.__contains__("\r")
-            or i.__contains__("*")
-            or i.__contains__("”")
-            or i.__contains__("“")
-            or i.__contains__(";")
-            or i.__contains__(":")
-            or i.__contains__(" ")
-            or i.__contains__("  ")
+            or "." in i
+            or "..." in i
+            or "!" in i
+            or "-" in i
+            or "?" in i
+            or "!?" in i
+            or "?!" in i
+            or "." in i
+            or "!" in i
+            or "?" in i
+            or "," in i
+            or "," in i
+            or "\n" in i
+            or "\t" in i
+            or "\r" in i
+            or "*" in i
+            or "”" in i
+            or "“" in i
+            or ";" in i
+            or ":" in i
+            or " " in i
+            or "  " in i
             or i.isdigit()
         ):
             match.remove(i)
