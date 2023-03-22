@@ -1,6 +1,7 @@
 import os
 import re
 from time import sleep
+from sys import exit
 
 
 class Task_2:
@@ -44,7 +45,7 @@ class Task_2:
             case "8":
                 self.current_user.load()
             case "9":
-                return
+                exit()
             case _:
                 print("Wrong input, try again!")
         sleep(1)
@@ -85,14 +86,15 @@ class User:
             else:
                 f = open(f"{self.name}.txt", "w")
                 f.close()
+                print("You had no collection, but we created empty one!")
         except:
             print("Something went wrong, try again!")
 
-    def add_element(self, elem) -> None:
+    def add_element(self, elem: str) -> None:
         """Adding element to collection of unique elements"""
 
         try:
-            self.items.add(elem)
+            self.items |= set(elem.split())
             print("Your element is added successfully!")
         except:
             print("Something went wrong during adding element")
@@ -112,14 +114,16 @@ class User:
         try:
             if elem in self.items:
                 print("Given element exists in your collection!")
+
                 return True
             else:
                 print("No such element in yuor collection!")
+
                 return False
         except:
             print("Something went wrong!")
 
-    def list_collection(self):
+    def list_collection(self) -> None:
         """Listing elements of collection of unique elements"""
         try:
             print("Here all the elements in your collection.")
@@ -134,8 +138,10 @@ class User:
         pat = f"{pattern}"
         match = re.findall(pat, " ".join(self.items))
         print("Here are all the matches by pattern in your collection: ")
+
         for i in match:
             print(i, end=" ")
+
         return None
 
     def save(self) -> None:
@@ -162,6 +168,7 @@ class User:
                     f.write(str(i) + " ")
                 f.close()
                 print("Save is successful!")
+
                 return None
             answer = input(
                 "File content is not a subset of your current collection, are you sure to save it?(y/n)   "
@@ -175,13 +182,13 @@ class User:
                     f.write(str(i) + " ")
                 f.close()
                 print("Save is successful!")
+
                 return None
             else:
                 print("Save stopped!")
+
                 return None
         except:
             print("Save went wrong!")
+
             return None
-
-
-A = Task_2()
