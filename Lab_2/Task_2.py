@@ -41,11 +41,22 @@ class Task_2:
             case "6":
                 self.current_user.save()
             case "7":
-                self.log_in()
+                answer = input("Wanna save your collection?(y/n): ")
+                if answer == "y":
+                    self.current_user.save()
+                    self.log_in()
+                else:
+                    self.log_in()
             case "8":
                 self.current_user.load()
             case "9":
-                exit()
+                answer = input("Wanna save your collection?(y/n): ")
+                if answer == "y":
+                    self.current_user.save()
+                    exit(0)
+                else:
+                    print("Program ended!")
+                    exit(0)
             case _:
                 print("Wrong input, try again!")
         sleep(1)
@@ -54,16 +65,25 @@ class Task_2:
     def log_in(self):
         """Log in or create a new user."""
 
-        try:
-            self.current_user = User(
-                input(
-                    "Here a program for storing a collection of unique elements for different users,\nNow enter a name of user you want to log in or sign up: "
-                )
+        #try:
+        self.current_user = User(
+            input(
+                "Here a program for storing a collection of unique elements for different users,\nNow enter a name of user you want to log in or sign up: "
             )
-            print("Log in/sign up is successful!")
+        )
+        print("Log in/sign up is successful!")
+        os.chdir(r"D:\src\Python_labs\Lab_2\users")
+        if os.path.exists(f"{self.current_user.name}.txt"):
+            answer = input("Do you want to load your  collection?(y/n): ")
+            if answer == "y":
+                self.current_user.load()
+                Task_2.menu(self)
+            else:
+                Task_2.menu(self)
+        else:
             Task_2.menu(self)
-        except:
-            print("Something went wrong!")
+        #except:
+            #print("Something went wrong!")
 
 
 class User:
@@ -80,7 +100,8 @@ class User:
                 f = open(
                     os.path.join(os.getcwd(), f"{self.name}.txt"), "r", encoding="utf-8"
                 )
-                self.items = set(f.read().split())
+                for i in f.read().split():
+                    self.items.add(i)
                 f.close()
                 print("Your coolection is loaded succesfully!")
             else:
