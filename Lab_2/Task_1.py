@@ -1,13 +1,12 @@
 import re
 import os
-
+from sys import path
 
 
 def text() -> str:
     """Prints the text in the file"""
 
-    os.chdir(r"D:\src\Python_labs\Lab_2")
-    f = open("text.txt", "r", encoding="utf-8")
+    f = open(os.path.join(path[0], "text.txt"), "r", encoding="utf-8")
     text = f.read()
     
     return text

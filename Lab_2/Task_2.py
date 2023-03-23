@@ -2,6 +2,7 @@ import os
 import re
 from time import sleep
 from sys import exit
+from sys import path
 
 
 class Task_2:
@@ -72,8 +73,8 @@ class Task_2:
             )
         )
         print("Log in/sign up is successful!")
-        os.chdir(r"D:\src\Python_labs\Lab_2\users")
-        if os.path.exists(f"{self.current_user.name}.txt"):
+
+        if os.path.exists(os.path.join(path[0], "users", f"{self.current_user.name}.txt")):
             answer = input("Do you want to load your  collection?(y/n): ")
             if answer == "y":
                 self.current_user.load()
@@ -95,17 +96,16 @@ class User:
         """Loads items for current user from file"""
 
         try:
-            os.chdir(r"D:\src\Python_labs\Lab_2\users")
-            if os.path.exists(f"{self.name}.txt"):
+            if os.path.exists(os.path.join(path[0], "users", f"{self.name}.txt")):
                 f = open(
-                    os.path.join(os.getcwd(), f"{self.name}.txt"), "r", encoding="utf-8"
+                    os.path.join(path[0], "users", f"{self.name}.txt"), "r", encoding="utf-8"
                 )
                 for i in f.read().split():
                     self.items.add(i)
                 f.close()
                 print("Your coolection is loaded succesfully!")
             else:
-                f = open(f"{self.name}.txt", "w")
+                f = open(os.path.join(path[0], "users", f"{self.name}.txt"), "w")
                 f.close()
                 print("You had no collection, but we created empty one!")
         except:
@@ -169,20 +169,19 @@ class User:
         """Saving collection of unique elements in a file"""
 
         try:
-            os.chdir(r"D:\src\Python_labs\Lab_2\users")
-            if os.path.exists(f"{self.name}.txt"):
+            if os.path.exists(os.path.join(path[0], "users", f"{self.name}.txt")):
                 pass
             else:
-                f = open(f"{self.name}.txt", "w")
+                f = open(os.path.join(path[0], "users", f"{self.name}.txt"), "w")
                 f.close()
             f = open(
-                os.path.join(os.getcwd(), f"{self.name}.txt"), "r", encoding="utf-8"
+                os.path.join(path[0], "users", f"{self.name}.txt"), "r", encoding="utf-8"
             )
             file = set(f.read().split())
             f.close()
             if file.issubset(self.items):
                 f = open(
-                    os.path.join(os.getcwd(), f"{self.name}.txt"), "w", encoding="utf-8"
+                    os.path.join(path[0], "users", f"{self.name}.txt"), "w", encoding="utf-8"
                 )
                 f.truncate()
                 for i in self.items:
@@ -196,7 +195,7 @@ class User:
             )
             if answer == "y":
                 f = open(
-                    os.path.join(os.getcwd(), f"{self.name}.txt"), "w", encoding="utf-8"
+                    os.path.join(path[0], "users", f"{self.name}.txt"), "w", encoding="utf-8"
                 )
                 f.truncate()
                 for i in self.items:
