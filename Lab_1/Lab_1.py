@@ -1,11 +1,11 @@
 import random
 
 
-#first part of the program
+# first part of the program
 
 print("Hello World")
 
-signs = { "*" : ["multy", "mul", "*", "m"], "/" : ["div", "divide", "d", "/"], "+" : ["addition", "add", "+", "a"], "-" : ["sub", "substraction", "-", "s"]}
+signs = {"*": ["multy", "mul", "*", "m"], "/": ["div", "divide", "d", "/"], "+" : ["addition", "add", "+", "a"], "-" : ["sub", "substraction", "-", "s"]}
 
 #second part of the program
 
