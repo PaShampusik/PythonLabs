@@ -1,5 +1,6 @@
 from types import CodeType, FunctionType
 from serializer.serialization.constants import *
+from frozendict import frozendict
 
 import inspect
 import re
@@ -33,7 +34,7 @@ class Serializer:
             elif hasattr(obj, "__dict__"):
                 result = self.serialize_object(obj)
                 result[TYPE_FIELD] = OBJECT_NAME
-                return FrozenDict(result)
+                return frozendict(result)
             else:
                 result = self.serialize_other(obj)
 
@@ -306,3 +307,4 @@ class Serializer:
             result.result_attribute = result_value
 
         return result
+    
