@@ -8,6 +8,8 @@ import re
 class Serializer:
 
     def serialize(self, obj):
+        # import pdb
+        # pdb.set_trace()
         result = {}
 
         if inspect.isclass(obj):
@@ -43,6 +45,9 @@ class Serializer:
         return frozendict(result)
 
     def deserialize(self, obj: dict):
+        # import pdb
+        # pdb.set_trace()
+
         try:
             obj_type_string = obj[TYPE_FIELD]
         except:

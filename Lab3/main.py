@@ -6,12 +6,18 @@ from serializer.factory.factory import Factory
 sys.path.append('/home/pavel/src/bsuir_igi/Lab3/serializer/factory')
 
 def parse(from_file, to_file, from_type, to_type):
+    # import pdb
+    # pdb.set_trace()
+
     serializer_from = Factory.get_parser(from_type)
     serializer_to = Factory.get_parser(to_type)
 
+
     result = serializer_from.load(from_file)
+    print(result)
 
     serializer_to.dump(result, to_file)
+
 
 
 def main():
@@ -42,6 +48,9 @@ def main():
         to_file = parse_args.to_file
         from_type = parse_args.from_type
         to_type = parse_args.to_type
+
+    # import pdb
+    # pdb.set_trace()
 
     if from_file == "" or to_file == "" or from_type == "" or to_type == "" or from_type == to_type:
         print("One of args is missing")

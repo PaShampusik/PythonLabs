@@ -1,23 +1,23 @@
+from functions import convert, deconvert
+from constants import PRIMITIVE_TYPES
+from serializer.factory.parsers.json.functions import *
 from serializer.factory.parsers.parser import Parser
 
-import xml.etree.ElementTree as ET
+class Xml(Parser):
+    def __init__(self):
+        self._dict_counter = 0
+        self._current_position = 0
+        self._indent = 0
 
-class XmlParser(Parser):
+    def dumps(self, obj):
+        return self._serialize_to_str(self.serializer.serialize(obj))
 
-    def dump(self, obj, file):  # obj to file
-        xml_str = ET.tostring(obj.to_xml())
-        with open(file, 'w') as f:
-            f.write(xml_str)
+    def dump(self, obj, file):
+        file.write(self.dumps(obj))
 
-    def dumps(self, obj):  # obj to string
-        xml_str = ET.tostring(obj.to_xml())
+    def loads(self, string):
+        self._current_position = 0
+        return deconvert(self.serializer.deserialize(string))
 
-        return xml_str.decode('utf-8')
-
-    # def load(self, file):  # file to obj
-    #     tree = ET.parse(file)
-    #     root = tree.getroot()
-    #     return MyCustomObject.from_xml(root)
-
-    # def loads(self, string):  # string to obj
-    #     return self.serializer.deserialize(yaml.load(string, Loader=UnsafeLoader))
+    def load(self, file):
+        return self.loads(file.read())
