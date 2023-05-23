@@ -2,18 +2,17 @@ from setuptools import setup
 
 
 setup(
-    name="Lab_3",
-    version="1.0",
+    name="Shchirov's_serializer",
+    version="1.0.0",
     description="python library for serialization",
-    url="https://github.com/PaShampusik/bsuir_igi/tree/lab3/lab3",
-    author="Shchirov Pavel",
+    url="https://github.com/PaShampusik/PythonLabs/Lab_3",
+    author="PaShampusik",
     author_email="shchirovpavel@gmail.com",
     classifiers=[
-        "Intended Audience :: Developers",
         "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent"
-    ],
-    packages=["serializers/json_serializer", "serializers/src",
+    ]
+    packages=["serializers/json_serializer", "serializers/base",
               "serializers/xml_serializer", "serializers"],
     include_package_data=True
 )
