@@ -22,7 +22,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     re_path('admin/', admin.site.urls),
-    re_path('cart/', include(('cart.urls', 'cart'), namespace='cart')),
+    re_path(r'^account/', include(('account.urls', 'account'), namespace = 'account')),
+    re_path(r'^cart/', include(('cart.urls', 'cart'), namespace='cart')),
     re_path(r'^orders/', include(('orders.urls', 'orders'), namespace='orders')),
     re_path('', include(('showroom.urls', 'showroom'), namespace='showroom')),
 ]
