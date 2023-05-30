@@ -1,119 +1,141 @@
-from . import constants
-from pydoc import locate
-from types import CodeType, FunctionType
+from serializers.base.constants import (PRIMITIVES, COLLECTIONS, CODE_ATTRIBUTES,
+                                          TYPE, VALUE, METHOD_DECORATORS, ITERATOR_TYPE)
+from types import NoneType, FunctionType, CodeType, CellType, MethodType
+import inspect
+import builtins
 
 
-def create_deserializer(obj_type):
-    if obj_type == constants.DICT:
-        return deserialize_dict
-    if obj_type == constants.FUNCTION:
-        return deserialize_function
-    if obj_type in constants.DEFAULT_COLLECTION_TYPES:
-        return deserialize_default_collection
-    if obj_type == constants.CLASS:
-        return deserialize_class
-    if obj_type in constants.PRIMITIVE_TYPES:
-        return deserialize_primitive_type
-    if obj_type == constants.OBJECT:
-        return deserialize_any_obj
-    if obj_type == constants.MODULE_NAME:
-        return deserialize_module
+class Deserializer:
 
+    @staticmethod
+    def unpack(obj: dict):
+        """
+        Method that converts dictionary that
+        represents the object to object.
 
-def deserialize(obj):
-    obj = dict((a, b) for a, b in obj)
-    obj_type = obj[constants.TYPE]
-    deserializer = create_deserializer(obj_type)
+        Parameters:
+        obj (Any): Dictionary.
 
-    if deserializer is None:
-        return
+        Returns:
+        object.
+        """
 
-    return deserializer(obj_type, obj[constants.VALUE])
+        if obj[TYPE] in tuple(map(lambda p: p.__name__, PRIMITIVES)):
+            if obj[TYPE] == str(NoneType.__name__):
+                return None
+            else:
+                return getattr(builtins, obj[TYPE])(obj[VALUE])
 
+        if obj[TYPE] in tuple(map(lambda c: c.__name__, COLLECTIONS)):
+            if obj[TYPE] == dict.__name__:
+                return {Deserializer.unpack(item[0]): Deserializer.unpack(item[1])
+                        for item in obj[VALUE]}
+            else:
+                return getattr(builtins, obj[TYPE])(Deserializer.unpack(item)
+                                                    for item in obj[VALUE])
 
-def deserialize_primitive_type(obj_type, primitive=None):
-    if obj_type == constants.NONE_TYPE:
-        return None
+        if obj[TYPE] in [FunctionType.__name__, MethodType.__name__]:
+            return Deserializer._unpack_function(obj[VALUE])
 
-    if obj_type == constants.BOOL and isinstance(primitive, str):
-        return primitive == constants.TRUE
+        if obj[TYPE] == CodeType.__name__:
+            return Deserializer._unpack_code(obj[VALUE])
 
-    return locate(obj_type)(primitive)
+        if obj[TYPE] == CellType.__name__:
+            return CellType(Deserializer.unpack(obj[VALUE]))
 
+        if obj[TYPE] == "class":
+            return Deserializer._unpack_class(obj[VALUE])
 
-def deserialize_default_collection(obj_type, default_collection):
-    match obj_type:
-        case constants.LIST:
-            return [deserialize(i) for i in default_collection]
+        if obj[TYPE] in tuple(map(lambda md: md.__name__, METHOD_DECORATORS)):
+            return getattr(builtins, obj[TYPE])(Deserializer.unpack(obj[VALUE]))
 
-        case constants.TUPLE:
-            return tuple([deserialize(i) for i in default_collection])
+        if obj[TYPE] == property.__name__:
+            return property(fget=Deserializer.unpack(obj[VALUE]["fget"]),
+                            fset=Deserializer.unpack(obj[VALUE]["fset"]),
+                            fdel=Deserializer.unpack(obj[VALUE]["fdel"]))
 
-        case constants.BYTES:
-            return bytes([deserialize(i) for i in default_collection])
+        if obj[TYPE] == ITERATOR_TYPE:
+            return iter(Deserializer.unpack(item) for item in obj[VALUE])
 
+        return Deserializer._unpack_object(obj[VALUE])
 
-def deserialize_dict(_, dict):
-    deserialized_dict = {}
-    for i in dict:
-        value = deserialize(i[1])
-        deserialized_dict[deserialize(i[0])] = value
+    @staticmethod
+    def _unpack_function(obj: dict):
+        code = Deserializer._unpack_code(obj["__code__"])
 
-    return deserialized_dict
+        globs = Deserializer._unpack_globals(obj["__globals__"], obj)
+        globs["builtins"] = __import__("builtins")
 
+        closure = Deserializer.unpack(obj["__closure__"])
+        closure = tuple(closure) if closure else tuple()
 
-def deserialize_function(_, function):
-    func = [0] * 4
-    code = [0] * 16
-    glob = {constants.BUILTINS: __builtins__}
+        unpacked = FunctionType(code=code, globals=globs, closure=closure)
+        unpacked.__globals__.update({unpacked.__name__: unpacked})
+        unpacked.__defaults__ = Deserializer.unpack(obj["__defaults__"])
+        unpacked.__kwdefaults__ = Deserializer.unpack(obj["__kwdefaults__"])
 
-    for i in function:
-        key = deserialize(i[0])
+        return unpacked
 
-        if key == constants.GLOBALS:
-            glob_dict = deserialize(i[1])
-            for glob_key in glob_dict:
-                glob[glob_key] = glob_dict[glob_key]
-        elif key == constants.CODE:
-            val = i[1][1][1]
+    @staticmethod
+    def _unpack_globals(globs, func):
+        unpacked = dict()
 
-            for arg in val:
-                code_arg_key = deserialize(arg[0])
-                if code_arg_key != constants.DOC and code_arg_key != 'co_linetable':
-                    code_arg_val = deserialize(arg[1])
-                    index = constants.CODE_OBJECT_ARGS.index(code_arg_key)
-                    code[index] = code_arg_val
+        for key, value in globs.items():
+            if "module" in key:
+                unpacked[value[VALUE]] = __import__(value[VALUE])
 
-            code = CodeType(*code)
-        else:
-            index = constants.FUNCTION_ATTRIBUTES.index(key)
-            func[index] = (deserialize(i[1]))
+            elif value != func["__name__"]:
+                unpacked[key] = Deserializer.unpack(value)
 
-    func[0] = code
-    func.insert(1, glob)
+        return unpacked
 
-    deserialized_function = FunctionType(*func)
-    if deserialized_function.__name__ in deserialized_function.__getattribute__(constants.GLOBALS):
-        deserialized_function.__getattribute__(constants.GLOBALS)[
-            deserialized_function.__name__] = deserialized_function
+    @staticmethod
+    def _unpack_class(obj):
 
-    return deserialized_function
+        attrs = {member: Deserializer.unpack(value)
+                 for member, value in obj.items()}
 
+        cls = type(Deserializer.unpack(obj["__name__"]),
+                   Deserializer.unpack(obj["__bases__"]),
+                   attrs)
 
-def deserialize_class(_, class_dict):
-    dct = deserialize_dict(constants.DICT, class_dict)
-    name = dct[constants.NAME]
-    del dct[constants.NAME]
-    return type(name, (object,), dct)
+        for value in attrs.values():
+            if inspect.isfunction(value):
+                value.__globals__.update({cls.__name__: cls})
+            elif isinstance(value, (staticmethod, classmethod)):
+                value.__func__.__globals__.update({cls.__name__: cls})
 
+        return cls
 
-def deserialize_module(_, module_name):
-    return __import__(module_name)
+    @staticmethod
+    def _unpack_object(obj):
 
+        unpacked = object.__new__(Deserializer.unpack(obj["__class__"]))
+        unpacked.__dict__ = {key: Deserializer.unpack(value)
+                             for key, value in obj["__vars__"].items()}
 
-def deserialize_any_obj(_, obj):
-    obj_dict = deserialize_dict(constants.DICT, obj)
-    deserialized_obj = obj_dict[constants.OBJECT_TYPE]()
-    for _, value in obj_dict[constants.FIELDS].items():
-        deserialized_obj.key = value
-    return deserialized_obj
+        return unpacked
+
+    @staticmethod
+    def _unpack_code(code):
+        # return CodeType(*(Deserializer.unpack(code[ATTRIBUTE])
+        #                   for ATTRIBUTE in CODE_ATTRIBUTES))
+
+        return CodeType(Deserializer.unpack(code["co_argcount"]),
+                        Deserializer.unpack(code["co_posonlyargcount"]),
+                        Deserializer.unpack(code["co_kwonlyargcount"]),
+                        Deserializer.unpack(code["co_nlocals"]),
+                        Deserializer.unpack(code["co_stacksize"]),
+                        Deserializer.unpack(code["co_flags"]),
+                        Deserializer.unpack(code["co_code"]),
+                        Deserializer.unpack(code["co_consts"]),
+                        Deserializer.unpack(code["co_names"]),
+                        Deserializer.unpack(code["co_varnames"]),
+                        Deserializer.unpack(code["co_filename"]),
+                        Deserializer.unpack(code["co_name"]),
+                        #Deserializer.unpack(code["co_qualname"]),
+                        Deserializer.unpack(code["co_firstlineno"]),
+                        Deserializer.unpack(code["co_lnotab"]),
+                        #Deserializer.unpack(code["co_exceptiontable"]),
+                        Deserializer.unpack(code["co_freevars"]),
+                        Deserializer.unpack(code["co_cellvars"]))

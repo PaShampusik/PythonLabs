@@ -1,306 +1,303 @@
-from . import constants
+from typing import Any
+from types import FunctionType, ModuleType, CellType
+from serializers.base.constants import is_iterable
+from serializers.base.constants import (PRIMITIVES, COLLECTIONS, CODE_ATTRIBUTES,
+                                          TYPE, VALUE, ITERATOR_TYPE,
+                                          IGNORED_CLASS_ATTRIBUTES, IGNORED_TYPES)
 import inspect
 
 
-def get_specific_serializer_function(obj):
-    """ 
-    Function:
-    -----------
-    Chooses right function for serialization
 
-    Parameters:
-    -----------
-    - obj: object to serialize
+class Serializer:
 
-    Returns:
-    -----------
-    - Function
-    """
-    if isinstance(obj, int | float | str | bool | complex | type(None)):
-        return serialize_primitive_type
-    if isinstance(obj, dict):
-        return serialize_dict
-    if isinstance(obj, list | tuple | bytes):
-        return serialize_default_collection
-    if inspect.isfunction(obj):
-        return serialize_function
-    if isinstance(obj, type(type.__dict__)):
-        return serialize_mappingproxy
-    if inspect.ismethoddescriptor(obj) or inspect.isbuiltin(obj):
-        return serialize_mappingproxy
-    if inspect.isgetsetdescriptor(obj) or inspect.ismemberdescriptor(obj):
-        return serialize_mappingproxy
-    if inspect.isclass(obj):
-        return serialize_class
-    if inspect.iscode(obj):
-        return serialize_code
-    if inspect.ismodule(obj):
-        return serialize_module
-    return serialize_any_obj
+    @staticmethod
+    def pack(obj: Any) -> dict:
+        """
+        Method that converts object to the dictionary
+        that represents the object.
 
+        Parameters:
+        obj (Any): Any Python object.
 
-def serialize(obj) -> tuple:
-    """ 
-    Function:
-    -----------
-    Serializes any type
+        Returns:
+        dictionary.
+        """
 
-    Parameters:
-    -----------
-    - obj: object to serialize
+        if isinstance(obj, PRIMITIVES):
+            return {TYPE: type(obj).__name__,
+                    VALUE: str(obj) if isinstance(obj, complex) else obj}
 
-    Returns:
-    -----------
-    - tuple of tuples: {type, value}
-    """
-    serializer = get_specific_serializer_function(obj)
-    serialized_obj = serializer(obj)
-    result = tuple((k, serialized_obj[k]) for k in serialized_obj)
-    return result
+        if isinstance(obj, COLLECTIONS):
+            if isinstance(obj, dict):
+                return {TYPE: type(obj).__name__,
+                        VALUE: [[Serializer.pack(key), Serializer.pack(value)]
+                                for key, value in obj.items()]}
+            else:
+                return {TYPE: type(obj).__name__,
+                        VALUE: [Serializer.pack(item) for item in obj]}
 
+        if inspect.isfunction(obj):
+            return {TYPE: type(obj).__name__,
+                    VALUE: Serializer._pack_function(obj)}
 
-def serialize_primitive_type(obj: float | bool | int | complex | str | None) -> dict:
-    """ 
-    Function:
-    -----------
-    Serializes built in primitive types
+        if inspect.iscode(obj):
+            return {TYPE: type(obj).__name__,
+                    VALUE: {key: Serializer.pack(value)
+                            for key, value in inspect.getmembers(obj)
+                            if key in CODE_ATTRIBUTES}}
 
-    Parameters:
-    -----------
-    - obj (float | bool | int | complex | str | None): object to serialize
+        if isinstance(obj, CellType):
+            return {TYPE: type(obj).__name__,
+                    VALUE: Serializer.pack(obj.cell_contents)}
 
-    Returns:
-    -----------
-    - dict: {type: value}
-    """
-    serialized_primitive_type = dict()
-    serialized_primitive_type[constants.TYPE] = type(obj).__name__
-    serialized_primitive_type[constants.VALUE] = obj
-    return serialized_primitive_type
+        if inspect.isclass(obj):
+            return {TYPE: "class",
+                    VALUE: Serializer._pack_class(obj)}
 
+        if isinstance(obj, property):
+            return {TYPE: type(obj).__name__,
+                    VALUE: {"fget": Serializer.pack(obj.fget),
+                            "fset": Serializer.pack(obj.fset),
+                            "fdel": Serializer.pack(obj.fdel)}}
 
-def serialize_dict(obj: dict) -> dict:
-    """ 
-    Function:
-    -----------
-    Serializes dict
+        if is_iterable(obj):
+            return {TYPE: ITERATOR_TYPE,
+                    VALUE: [Serializer.pack(item) for item in obj]}
 
-    Parameters:
-    -----------
-    - obj (dict): object to serialize
+        # if inspect.isgenerator(obj):
+        #     raise TypeError("Python does not support creating generators on the fly")
 
-    Returns:
-    -----------
-    - dict of tuples: [((type: name), (value: v))] = ((type: name), (value: v))
-    """
-    serialized_obj = dict()
-    serialized_obj[constants.TYPE] = constants.DICT
-    serialized_obj[constants.VALUE] = {}
+        if inspect.ismethod(obj):
+            return {TYPE: type(obj).__name__,
+                    VALUE: Serializer._pack_function(obj.__func__)}
 
-    for k, v in obj.items():
-        key = serialize(k)
-        value = serialize(v)
-        serialized_obj[constants.VALUE][key] = value
+        return {TYPE: "object",
+                VALUE: {"__class__": Serializer.pack(obj.__class__),
+                        "__vars__": {key: Serializer.pack(value) for key, value in vars(obj).items()}}}
 
-    serialized_obj[constants.VALUE] = tuple((k, serialized_obj[constants.VALUE][k])
-                                            for k in serialized_obj[constants.VALUE])
+    @staticmethod
+    def _pack_function(obj: FunctionType, cls=None):
 
-    return serialized_obj
+        return {"__name__": obj.__name__,
+                "__globals__": Serializer._pack_globals(obj, cls),
+                "__closure__": Serializer.pack(obj.__closure__),
+                "__defaults__": Serializer.pack(obj.__defaults__),
+                "__kwdefaults__": Serializer.pack(obj.__kwdefaults__),
+                "__code__": {key: Serializer.pack(value)
+                             for key, value in inspect.getmembers(obj.__code__)
+                             if key in CODE_ATTRIBUTES}}
 
+    @staticmethod
+    def _pack_globals(obj, cls=None):
+        globs = dict()
 
-def serialize_default_collection(obj: tuple | list | bytes):
-    """ 
-    Function:
-    -----------
-    Serializes tuple | list | bytes
+        for key, value in obj.__globals__.items():
 
-    Parameters:
-    -----------
-    - obj: collection to serialize
+            if key not in obj.__code__.co_names:
+                continue
 
-    Returns:
-    -----------
-    - dict with tuple
-    """
-    serialized_obj = dict()
-    serialized_obj[constants.TYPE] = type(obj).__name__
-    serialized_obj[constants.VALUE] = tuple([serialize(i) for i in obj])
-    return serialized_obj
+            if isinstance(value, ModuleType):
+                globs[f"module {key}"] = Serializer.pack(key)
 
+            elif inspect.isclass(value):
+                if cls and value != cls or not cls:
+                    globs[key] = Serializer.pack(value)
 
-def serialize_function(obj) -> dict:
-    """ 
-    Function:
-    -----------
-    Serializes function
+            elif key == obj.__code__.co_name:
+                globs[key] = Serializer.pack(obj.__name__)
 
-    Parameters:
-    -----------
-    - obj: function to serialize
+            else:
+                globs[key] = Serializer.pack(value)
 
-    Returns:
-    -----------
-    - dict
-    """
-    serialized_function = dict()
-    serialized_function[constants.TYPE] = constants.FUNCTION
-    serialized_function[constants.VALUE] = {}
-    members = inspect.getmembers(obj)
-    members = [i for i in members if i[0] in constants.FUNCTION_ATTRIBUTES]
-    for i in members:
-        key = serialize(i[0])
-        if i[0] != constants.CLOSURE:
-            value = serialize(i[1])
-        else:
-            value = serialize(None)
+        return globs
 
-        serialized_function[constants.VALUE][key] = value
-        if i[0] == constants.CODE:
-            key = serialize(constants.GLOBALS)
-            serialized_function[constants.VALUE][key] = {}
-            names = i[1].__getattribute__("co_names")
-            glob = obj.__getattribute__(constants.GLOBALS)
-            glob_dict = {}
-            for name in names:
-                if name == obj.__name__:
-                    glob_dict[name] = obj.__name__
-                elif name in glob and not inspect.ismodule(name) and name not in __builtins__:
-                    glob_dict[name] = glob[name]
-            serialized_function[constants.VALUE][key] = serialize(glob_dict)
+    @staticmethod
+    def _pack_class(obj):
+        packed = dict()
+        packed["__name__"] = Serializer.pack(obj.__name__)
 
-    serialized_function[constants.VALUE] = tuple((k, serialized_function[constants.VALUE][k])
-                                                 for k in serialized_function[constants.VALUE])
-    return serialized_function
+        for key, value in obj.__dict__.items():
+
+            if key in IGNORED_CLASS_ATTRIBUTES or type(value) in IGNORED_TYPES:
+                continue
+
+            if isinstance(obj.__dict__[key], staticmethod):
+                packed[key] = dict()
+                packed[key]["type"] = "staticmethod"
+                packed[key]["value"] = {"type": "function", "value": Serializer._pack_function(value.__func__, obj)}
+
+            elif isinstance(obj.__dict__[key], classmethod):
+                packed[key] = dict()
+                packed[key]["type"] = "classmethod"
+                packed[key]["value"] = {"type": "function", "value": Serializer._pack_function(value.__func__, obj)}
+
+            elif inspect.ismethod(value):
+                packed[key] = Serializer._pack_function(value.__func__, obj)
+
+            elif inspect.isfunction(value):
+                packed[key] = dict()
+                packed[key]["type"] = "function"
+                packed[key]["value"] = Serializer._pack_function(value, obj)
+
+            else:
+                packed[key] = Serializer.pack(value)
+
+        packed["__bases__"] = dict()
+        packed["__bases__"]["type"] = "tuple"
+        packed["__bases__"]["value"] = [Serializer.pack(item) for item in obj.__bases__ if item != object]
+
+        return packed
 
 
-def serialize_mappingproxy(obj) -> dict:
-    """ 
-    Function:
-    -----------
-    Serializes mappingproxy
-
-    Parameters:
-    -----------
-    - obj: mappingproxy to serialize
-
-    Returns:
-    -----------
-    - dict
-    """
-    serialized_obj = dict()
-    serialized_obj[constants.TYPE] = type(obj).__name__
-
-    serialized_obj[constants.VALUE] = {}
-    members = inspect.getmembers(obj)
-    members = [i for i in members if not callable(i[1])]
-    for i in members:
-        key = serialize(i[0])
-        val = serialize(i[1])
-        serialized_obj[constants.VALUE][key] = val
-    serialized_obj[constants.VALUE] = tuple(
-        (k, serialized_obj[constants.VALUE][k]) for k in serialized_obj[constants.VALUE])
-
-    return serialized_obj
 
 
-def serialize_class(obj) -> dict:
-    """ 
-    Function:
-    -----------
-    Serializes class
+# def get_serializer_function(obj: any):
+#     """ 
+#     Function:
+#     -----------
+#     Chooses right function for serialization
 
-    Parameters:
-    -----------
-    - obj: class to serialize
+#     Parameters:
+#     -----------
+#     - obj: object to serialize
 
-    Returns:
-    -----------
-    - dict
-    """
-    serialized_obj = dict()
-    serialized_obj[constants.TYPE] = constants.CLASS
-    serialized_obj[constants.VALUE] = {}
-    serialized_obj[constants.VALUE][serialize(
-        constants.NAME)] = serialize(obj.__name__)
-    members = []
-    for i in inspect.getmembers(obj):
-        if not (i[0] in constants.NOT_CLASS_ATTRIBUTES):
-            members.append(i)
+#     Returns:
+#     -----------
+#     - Function
+#     """
+#     if isinstance(obj, PRIMITIVES):
+#         return {TYPE: type(obj).__name__, VALUE: str(obj) if isinstance(obj, complex) else obj}
 
-    for i in members:
-        key = serialize(i[0])
-        val = serialize(i[1])
-        serialized_obj[constants.VALUE][key] = val
-    serialized_obj[constants.VALUE] = tuple(
-        (k, serialized_obj[constants.VALUE][k]) for k in serialized_obj[constants.VALUE])
+#     if isinstance(obj, COLLECTIONS):
+#         if isinstance(obj, dict):
+#             return {TYPE: type(obj).__name__,
+#                     VALUE: [[get_serializer_function(key), get_serializer_function(value)]
+#                             for key, value in obj.items()]}
+#         else:
+#             return {TYPE: type(obj).__name__,
+#                     VALUE: [get_serializer_function(item) for item in obj]}
 
-    return serialized_obj
+#     if inspect.isfunction(obj):
+#         return {TYPE: type(obj).__name__,
+#                     VALUE: serialize(obj)}
 
+#     if inspect.iscode(obj):
+#         return {TYPE: type(obj).__name__,
+#                     VALUE: {key: get_serializer_function(value)
+#                             for key, value in inspect.getmembers(obj)
+#                             if key in CODE_ATTRIBUTES}}
 
-def serialize_code(obj) -> dict:
-    """ 
-    Function:
-    -----------
-    Serializes code type
+#     if isinstance(obj, CellType):
+#         return {TYPE: type(obj).__name__,
+#                     VALUE: get_serializer_function(obj.cell_contents)}
 
-    Parameters:
-    -----------
-    - obj: code to serialize
+#     if inspect.isclass(obj):
+#         return {TYPE: "class",
+#                     VALUE: _serialize_class(obj)}
 
-    Returns:
-    -----------
-    - dict
-    """
-    if type(obj).__name__ is None:
-        return None
+#     if isinstance(obj, property):
+#         return {TYPE: type(obj).__name__,
+#                     VALUE: {"fget": get_serializer_function(obj.fget),
+#                             "fset": get_serializer_function(obj.fset),
+#                             "fdel": get_serializer_function(obj.fdel)}}
 
-    serialized_code = dict()
-    serialized_code[constants.TYPE] = type(obj).__name__
+#     if is_iterable(obj):
+#         return {TYPE: ITERATOR_TYPE,
+#                     VALUE: [get_serializer_function(item) for item in obj]}
 
-    serialized_code[constants.VALUE] = {}
-    members = inspect.getmembers(obj)
-    members = [i for i in members if not callable(i[1])]
-    for i in members:
-        key = serialize(i[0])
-        val = serialize(i[1])
-        serialized_code[constants.VALUE][key] = val
-    serialized_code[constants.VALUE] = tuple(
-        (k, serialized_code[constants.VALUE][k]) for k in serialized_code[constants.VALUE])
+#         # if inspect.isgenerator(obj):
+#         #     raise TypeError("Python does not support creating generators on the fly")
 
-    return serialized_code
+#     if inspect.ismethod(obj):
+#         return {TYPE: type(obj).__name__,
+#                     VALUE: serialize(obj.__func__)}
 
-
-def serialize_module(obj):
-    serialized_module = dict()
-    serialized_module[constants.TYPE] = constants.MODULE_NAME
-    serialized_module[constants.VALUE] = obj.__name__
-
-    return serialized_module
+#     return {TYPE: "object",
+#                 VALUE: {"__class__": get_serializer_function(obj.__class__),
+#                         "__vars__": {key: get_serializer_function(value) for key, value in vars(obj).items()}}}
 
 
-def serialize_any_obj(obj) -> dict:
-    """ 
-    Function:
-    -----------
-    Serializes any object of unknown type
+# def serialize(obj: FunctionType, cls = None):
+#     """ 
+#     Function:
+#     -----------
+#     Serializes any type
 
-    Parameters:
-    -----------
-    - obj: object to serialize
+#     Parameters:
+#     -----------
+#     - obj: object to serialize
 
-    Returns:
-    -----------
-    - dict
-    """
-    obj_type = type(obj)
-    serialized_obj = dict()
-    serialized_obj[constants.TYPE] = constants.OBJECT
-    serialized_obj[constants.VALUE] = {}
-    serialized_obj[constants.VALUE][serialize(
-        constants.OBJECT_TYPE)] = serialize(obj_type)
-    serialized_obj[constants.VALUE][serialize(
-        constants.FIELDS)] = serialize(obj.__dict__)
-    serialized_obj[constants.VALUE] = tuple(
-        (k, serialized_obj[constants.VALUE][k]) for k in serialized_obj[constants.VALUE])
+#     Returns:
+#     -----------
+#     - tuple of tuples: {type, value}
+#     """
+#     return {"__name__": obj.__name__,
+#                 "__globals__": _serialize_globals(obj, cls),
+#                 "__closure__": get_serializer_function(obj.__closure__),
+#                 "__defaults__": get_serializer_function(obj.__defaults__),
+#                 "__kwdefaults__": get_serializer_function(obj.__kwdefaults__),
+#                 "__code__": {key: get_serializer_function(value)
+#                              for key, value in inspect.getmembers(obj.__code__)
+#                              if key in CODE_ATTRIBUTES}}
 
-    return serialized_obj
+
+# def _serialize_globals(obj, cls=None):
+#     globs = dict()
+
+#     for key, value in obj.__globals__.items():
+
+#         if key not in obj.__code__.co_names:
+#             continue
+
+#         if isinstance(value, ModuleType):
+#             globs[f"module {key}"] = get_serializer_function(key)
+
+#         elif inspect.isclass(value):
+#             if cls and value != cls or not cls:
+#                 globs[key] = get_serializer_function(value)
+
+#         elif key == obj.__code__.co_name:
+#             globs[key] = get_serializer_function(obj.__name__)
+
+#         else:
+#             globs[key] = get_serializer_function(value)
+
+#     return globs
+
+
+
+# def _serialize_class(obj):
+#     packed = dict()
+#     packed["__name__"] = get_serializer_function(obj.__name__)
+
+#     for key, value in obj.__dict__.items():
+
+#         if key in IGNORED_CLASS_ATTRIBUTES or type(value) in IGNORED_TYPES:
+#             continue
+
+#         if isinstance(obj.__dict__[key], staticmethod):
+#             packed[key] = dict()
+#             packed[key]["type"] = "staticmethod"
+#             packed[key]["value"] = {"type": "function", "value": serialize(value.__func__, obj)}
+             
+#         elif isinstance(obj.__dict__[key], classmethod):
+#             packed[key] = dict()
+#             packed[key]["type"] = "classmethod"
+#             packed[key]["value"] = {"type": "function", "value": serialize(value.__func__, obj)}
+
+#         elif inspect.ismethod(value):
+#             packed[key] = serialize(value.__func__, obj)
+
+#         elif inspect.isfunction(value):
+#             packed[key] = dict()
+#             packed[key]["type"] = "function"
+#             packed[key]["value"] = serialize(value, obj)
+
+#         else:
+#             packed[key] = get_serializer_function(value)
+
+#     packed["__bases__"] = dict()
+#     packed["__bases__"]["type"] = "tuple"
+#     packed["__bases__"]["value"] = [get_serializer_function(item) for item in obj.__bases__ if item != object]
+
+#     return packed

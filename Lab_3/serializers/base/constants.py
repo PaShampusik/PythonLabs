@@ -1,67 +1,79 @@
-TYPE = "type"
-VALUE = "value"
+from typing import Final
+from types import NoneType
+import types
+import enum
 
-DICT = "dict"
-LIST = "list"
-BYTES = "bytes"
-TUPLE = "tuple"
-INT = "int"
-BOOL = "bool"
-STR = "str"
-FLOAT = "float"
-NONE_TYPE = "NoneType"
-COMPLEX = "complex"
-TRUE = "True"
 
-PRIMITIVE_TYPES = [INT, FLOAT, BOOL, COMPLEX, NONE_TYPE, STR]
-DEFAULT_COLLECTION_TYPES = [LIST, TUPLE, BYTES]
+def is_iterable(obj):
+    return hasattr(obj, '__iter__') and hasattr(obj, '__next__') and callable(obj.__iter__)
 
-FUNCTION = "function"
+XML: Final[str] = "xml"
+JSON: Final[str] = "json"
 
-CODE = "__code__"
-CLOSURE = "__closure__"
-NAME = "__name__"
-DEFAULTS = "__defaults__"
+KEY: Final[str] = "key"
+TYPE: Final[str] = "type"
+VALUE: Final[str] = "value"
 
-FUNCTION_ATTRIBUTES = [
-    CODE,
-    NAME,
-    DEFAULTS,
-    CLOSURE
-]
+PRIMITIVES: Final[list] = (int, float, bool, str, NoneType, complex)
+COLLECTIONS: Final[list] = (set, dict, list, tuple, bytes, bytearray)
 
-GLOBALS = "__globals__"
-BUILTINS = "__builtins__"
-DOC = "__doc__"
-OBJECT = "object"
-OBJECT_TYPE = "__object_type__"
+CODE_ATTRIBUTES: Final[list] = ("co_argcount",
+                                "co_posonlyargcount",
+                                "co_kwonlyargcount",
+                                "co_nlocals",
+                                "co_stacksize",
+                                "co_flags",
+                                "co_code",
+                                "co_consts",
+                                "co_names",
+                                "co_varnames",
+                                "co_filename",
+                                "co_name",
+                                "co_qualname",
+                                "co_firstlineno",
+                                "co_lnotab",
+                                "co_exceptiontable",
+                                "co_freevars",
+                                "co_cellvars")
 
-CLASS = "class"
-NOT_CLASS_ATTRIBUTES = [
-    "__class__",
-    "__getattribute__",
-    "__new__",
-    "__setattr__",
-]
+IGNORED_CLASS_ATTRIBUTES: list[str] = ("__name__",
+                                       "__base__",
+                                       "__basicsize__",
+                                       "__dictoffset__",
+                                       "__class__")
 
-MODULE_NAME = "__module__name__"
-FIELDS = "__fields__"
+IGNORED_TYPES: Final[list] = (types.WrapperDescriptorType,
+                              types.MethodDescriptorType,
+                              types.BuiltinFunctionType,
+                              types.GetSetDescriptorType,
+                              types.MappingProxyType)
 
-CODE_OBJECT_ARGS = [
-    'co_argcount',
-    'co_posonlyargcount',
-    'co_kwonlyargcount',
-    'co_nlocals',
-    'co_stacksize',
-    'co_flags',
-    'co_code',
-    'co_consts',
-    'co_names',
-    'co_varnames',
-    'co_filename',
-    'co_name',
-    'co_firstlineno',
-    'co_lnotab',
-    'co_freevars',
-    'co_cellvars'
-]
+METHOD_DECORATORS: Final[list] = (classmethod, staticmethod)
+
+ITERATOR_TYPE: Final[str] = "iterator"
+
+
+class JsonRegularExpression(enum.Enum):
+    INT = r"[+-]?\d+"
+    FLOAT = fr"({INT}(?:\.\d+)?(?:e{INT})?)"
+    BOOL = r"((True)|(False))\b"
+    STR = r"\"((\\\")|[^\"])*\""
+    NONE = r"\b(None)\b"
+    COMPLEX = fr"{FLOAT}{FLOAT}j"
+
+    LIST_RECURSION = r"\[(?R)?(,(?R))*\]"
+    DICT_RECURSION = r"\{((?R):(?R))?(?:,(?R):(?R))*\}"
+
+    ANY_VALUE = fr"\s*({LIST_RECURSION}|" \
+                fr"{DICT_RECURSION}|" \
+                fr"{STR}|" \
+                fr"{FLOAT}|" \
+                fr"{BOOL}|" \
+                fr"{INT}|" \
+                fr"{NONE}|" \
+                fr"{COMPLEX}\s*)"
+
+
+class XmlRegularExpression(enum.Enum):
+    TYPES = "|".join(map(lambda x: x.__name__, list(PRIMITIVES) + [list, dict]))
+    ITEM = fr"\s*(\<(?P<{KEY}>{TYPES})\>(?P<{VALUE}>([^<>]*)|(?R)+)\</({TYPES})\>)\s*"

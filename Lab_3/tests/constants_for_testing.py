@@ -1,208 +1,169 @@
-# primitive types
-a = 1
-aa = -1
-b = 1.2
-bb = -1.2
-c = '123'
-cc = ''
-d = True
-dd = False
-e = None
-f = complex(2, 3)
+import math
 
-# collection types
-list1 = [1, 2]
-list2 = ['1', 2]
-list3 = [complex(2, 3), 1, '1', True, 0.9, None]
 
-tuple1 = (1, 2, 3)
-tuple2 = (1, '2')
-tuple3 = (complex(2, 3), 1, '1', True, 0.9, None)
+def circle_area(r):
+    return math.pi * (r ** 2)
 
-bytes1 = bytes([46, 46, 46])
 
-dict1 = {1: 2, 2: 3}
-dict2 = {1: '1', 2: '2'}
+def decorator1(func):
+    def inner(*args, **kwargs):
+        return func(*args, **kwargs) * 10
 
-dict3 = {1: [1, 2], 2: (1, 2), 3: '3', 4: False}
-dict4 = {1: [1, 2, (3, 4)],
-         2: (1, (2, (3, (4, (5, (6, (7)))))))}
-dict5 = {(1, (2, (3, (4, (5, (6)))))): (7, (8, (9, (10, (12))))),
-         (1, ('2', (True, (None, (complex(2, 3), (6.9)))))): (1, (1, (1, (2))))}
+    return inner
 
-# funcs
 
+@decorator1
+def square_area(h):
+    return h * h
 
-def func1():
-    return 8
 
+def limit(n):
+    def wrapper(func):
+        def inner(*args, **kwargs):
+            if len(args) + len(kwargs) > n:
+                raise ValueError('too much arguments')
+            return func(*args, **kwargs)
 
-def func2(a):
-    return 8 + a
+        return inner
 
+    return wrapper
 
-def func3(*a):
-    sum = 0
-    for tmp in a:
-        sum = sum + tmp
-    return sum
 
-
-def func4(a):
-    import math
-    return math.sin(a) + math.cos(a)
-
-
-def func5(arr):
-    return sorted(arr)
-
-
-def func6(n):
-    if (n == 1):
-        return 1
-    return n * func6(n-1)
-
-
-def func7(n):
-    return n*func6(n-1)
-
-
-def lambda1(a): return a + 10
-def lambda2(a, b, c): return a + b + c
-
-
-# class test
-
-class A:
-    a = 123
-
-    def __init__(self):
-        pass
-
-    def qwe(self, a):
-        return a
-
-
-class B(A):
-    c = 123
-
-    def __init__(self, b):
-        self.b = b
-
-    def func(self):
-        return 8
-
-
-class E:
-    e = 123
-
-    def __init__(self):
-        pass
-
-
-class EE(E):
-    ee = 123
-
-    def __init__(self):
-        pass
-
-
-class EEE(EE):
-    eee = 123
-
-    def __init__(self):
-        pass
-
-
-class EEEE(EEE):
-    eeee = 123
-
-    def __init__(self):
-        pass
-
-
-class first:
-    def __init__(self):
-        pass
-
-    def func(self, a):
-        return a
-
-
-class second(first):
-    def __init__(self):
-        pass
-
-    def func(self, a):
-        return a**a
-
-
-class st:
-    @staticmethod
-    def qwe():
-        return 5
-
-
-class HardBase:
-    a = 123
-    s = '123'
-
-    def __init__(self):
-        pass
-
-    def func(self, a, b):
-        return a ** b
-
-
-class HardClass(HardBase):
-    c = 456
-
-    def __init__(self):
-        pass
-
-    def func1(self, *args):
-        import math
-        sum = 0
-
-        for tmp in args:
-            sum += tmp
-
-        return tmp
-
-    def func2(self, a):
-        return func7(a)
-
-
-def raise_if_to_many_args(func):
-    def wrap(*args):
-        if (len(args) > 10):
-            raise ValueError("to many arguments")
-
-        return func(*args)
-
-    return wrap
-
-
+@limit(5)
 def sum_func(*args):
     return sum(args)
 
 
-class AAAA:
-    a = 123
-
-    def __init__(self):
-        pass
+def generator(start=0, stop=10):
+    for i in range(start, stop):
+        yield i
 
 
-class BBBB:
-    b = 234
+def subgenerator():
+    yield from generator()
+    yield from generator(5)
+    yield from generator(5, 20)
 
-    def __init__(self):
-        pass
+
+def closure(a, b, c):
+    def sum_abc():
+        return a + b + c
+
+    return sum_abc
 
 
-class CCCC(AAAA, BBBB):
-    c = 345
+lambda_pow = lambda x: x ** x
 
-    def __init__(self):
-        pass
+
+def factorial(n):
+    return 1 if n == 0 else n * factorial(n - 1)
+
+
+class A:
+    def info_a(self):
+        return 'it is a'
+
+
+class B:
+    def info_b(self):
+        return 'is is b'
+
+
+class C(A, B):
+    def info_c(self):
+        return 'it is c' + self.info_a() + self.info_b()
+
+
+class D(C):
+    def info_d(self):
+        return 'it is d'
+
+
+class E(D):
+    def info_e(self):
+        return 'it is e' + self.info_a() + \
+            self.info_b() + self.info_c() + self.info_d()
+
+
+class Human:
+    CONST = '123ABC456'
+
+    def __init__(self, age, name):
+        self._age = age
+        self._name = name
+
+    @property
+    def age(self):
+        return self._age
+
+    @age.setter
+    def age(self, age):
+        self._age = age
+
+    @age.deleter
+    def age(self):
+        del self._age
+        self._name = 'name after age deletion'
+
+    @classmethod
+    def get_const(cls):
+        return cls.CONST
+
+    @staticmethod
+    def static():
+        return 'It is static'
+
+
+a = 5
+
+
+def func1():
+    global a
+    a *= 2
+    return a
+
+
+def func2():
+    x = 10
+
+    def inner():
+        nonlocal x
+        x *= 20
+
+    inner()
+    return x
+
+
+def func3(lst):
+    return type(lst), len(lst)
+
+
+it = iter(list(range(10)))
+generator_expression = (i for i in range(10))
+
+bts = "123qwe456asd".encode()
+bts_arr = bytearray(bts)
+
+
+def sum_args(*args):
+    return sum(args)
+
+
+def sum_kwargs(**kwargs):
+    return sum(kwargs.values())
+
+
+def sum_args_kwargs(*args, **kwargs):
+    return sum_args(*args) + sum_kwargs(**kwargs) + \
+        sum(args) + sum(kwargs.values())
+
+
+class Profile:
+    def __init__(self, age, name, email, phone):
+        self.age = age
+        self.name = name
+        self.email = email
+        self.phone = phone
+
+    def __str__(self):
+        return f'Profile: {self.age = }, {self.name = }, {self.email = }, {self.phone = }'
