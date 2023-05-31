@@ -1,5 +1,6 @@
 import unittest
-from serializers.json_serializer.JsonSerializer import _JsonSerializer
+from serializers.json_serializer.JsonSerializer import JsonSerializer
+from serializers.xml_serializer.XmlSerializer import XmlSerializer
 from tests.constants_for_testing import (circle_area, square_area, generator, bts, bts_arr, sum_func,
                         generator_expression, closure, factorial, Profile,
                         sum_args, sum_kwargs, sum_args_kwargs, subgenerator,
@@ -9,7 +10,8 @@ from tests.constants_for_testing import (circle_area, square_area, generator, bt
 
 class BaseJsonTestCase(unittest.TestCase):
     def setUp(self) -> None:
-        self.serializer = _JsonSerializer()
+        self.serializer = JsonSerializer()
+        #self.serializer = XmlSerializer()
         self.alias = lambda x: self.serializer.loads(self.serializer.dumps(x))
 
 

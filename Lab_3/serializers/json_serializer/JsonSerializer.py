@@ -1,8 +1,3 @@
-# from ..base.serialization import get_serializer_function
-# from ..base.deserialization import create_deserializer
-# from .serialization_logic import serialize_to_json
-# from .serialization_logic import deserialize_json
-
 from typing import Any
 from serializers.base.deserialization import Deserializer
 from serializers.base.serialization import Serializer
@@ -11,53 +6,7 @@ from ..base.constants import (PRIMITIVES,
 import regex
 
 
-class _JsonSerializer:
-    # @staticmethod
-    # def dumps(obj) -> str:
-    #     """ 
-    #     Function:
-    #     -----------
-    #     Serializes to json string
-
-    #     Parameters:
-    #     -----------
-    #         - obj: object to serialize
-
-    #     Returns:
-    #     -----------
-    #         - string
-    #     """
-    #     serialized_obj = get_serializer_function(obj)
-    #     return serialize_to_json(serialized_obj).replace('\n', '\\n')
-
-    # @staticmethod
-    # def dump(obj, file) -> None:
-    #     """ 
-    #     Function:
-    #     -----------
-    #     Serializes and writes to file
-
-    #     Parameters:
-    #     -----------
-    #         - obj: object to serialize
-
-    #     Returns:
-    #     -----------
-    #         - None
-    #     """
-    #     file.write(JsonSerializer.dumps(obj))
-
-    # @staticmethod
-    # def loads(obj: str):
-    #     obj = deserialize_json(obj.replace("\\n", "\n"))
-    #     return create_deserializer(obj)
-
-    # @staticmethod
-    # def load(file):
-    #     return JsonSerializer.loads(file.read())
-
-
-
+class JsonSerializer:
     def dumps(self, obj: Any) -> str:
         """
         Convert an object to string of 'JSON' format.
