@@ -9,7 +9,11 @@
 <body>
 <div id="header">
     <a href="/" class="logo">My shop</a>
-</div>
+    {% if not user.is_authenticated %}
+        <a href="{% url "account:login" %}" class="button light"> Log in </a>    
+    {% else %}    
+        <a href="{% url "account:logout" %}" class="button light"> Log out </a>           
+    {% endif %}
 <div id="subheader">
     <div class="cart">
         {% with total_items=cart|length %}

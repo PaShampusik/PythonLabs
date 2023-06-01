@@ -1,4 +1,4 @@
-{% load staticfiles %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,23 +6,16 @@
 </head>
 <body>
     <div id="header">
-        <span class="logo">Bookmarks</span>
-        {% if request.user.is_authenticated %}
-            <ul class="menu">
-                <li {% if section=="dashboard" %}class="selected"{% endif %}>
-                <a href="{% url " dashboard" %}">My dashboard</a>
-                </li>
-                <li {% if section=="showroom" %}class="selected"{% endif %}>
-                <a href="#">Showroom</a>
-                </li>
-            </ul>
+        <span class="logo">Car Showroom</span>
+        {% if user.is_authenticated %}
+            
         {% endif %}
         <span class="user">
             {% if request.user.is_authenticated %}
                 Hello {{ request.user.first_name }},
-                <a href="{% url "logout" %}">Logout</a>
+                <a href="{% url "account:logout" %}">Logout</a>
             {% else %}
-                <a href="{% url "login" %}">Log-in</a>
+                <a href="{% url "account:login" %}">Log-in</a>
             {% endif %}
         </span>
     </div>
