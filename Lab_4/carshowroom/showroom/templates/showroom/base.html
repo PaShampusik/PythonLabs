@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>{% block title %}My shop{% endblock %}</title>
-    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
 <div id="header">
@@ -12,7 +12,16 @@
     <p id="current-time"
                     style="width: 70%; text-align: center; color: black;margin: 0 auto; position: relative;">
                 </p>
-
+                {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                    <div>
+                        <a href="{% url 'showroom:product_create' %}" class="btn btn-primary">Добавить продукт</a>
+                    </div>
+                {% endif %}
+            {% endif %}
+    {% if user.is_superuser %}
+    <a href="{% url "showroom:statistics" %}" class="button light"> STATISTICS </a> 
+    {% endif %}
     {% if not user.is_authenticated %}
         <a href="{% url "account:login" %}" class="button light"> Log in </a> 
         <a href="{% url "account:register" %}">Sign Up</a></p>   

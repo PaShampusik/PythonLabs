@@ -1,11 +1,12 @@
 from django.db import models
 from showroom.models import Product
-
+from phonenumber_field.modelfields import PhoneNumberField
 
 class Order(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
+    number = PhoneNumberField(region="BY")
     address = models.CharField(max_length=250)
     postal_code = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
