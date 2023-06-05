@@ -1,0 +1,15 @@
+{% extends "showroom/base.html" %}
+{% load static %}
+
+{% block title %}
+    Delete Product
+{% endblock %}
+
+{% block content %}
+    <h1>Delete Product</h1>
+    <p>Are you sure you want to delete this product?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+{% endblock %}
