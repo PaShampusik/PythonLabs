@@ -1,0 +1,19 @@
+{% extends "showroom/base.html" %}
+{% block content %}
+<html>
+<head>
+    <title>Страница статистики</title>
+</head>
+<body>
+    <h1>Статистика</h1>
+
+    <p>Суммарная выручка: {{ total_revenue }}</p>
+
+    <h2>Популярность машин</h2>
+    <img src="media/graph.png" alt="График популярности товаров">
+
+    <!-- Дополнительный HTML-код для стилизации страницы и размещения других данных по вашему усмотрению -->
+
+</body>
+</html>
+{% endblock %}
