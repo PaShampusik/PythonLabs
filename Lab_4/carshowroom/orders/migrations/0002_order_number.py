@@ -5,16 +5,17 @@ import phonenumber_field.modelfields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('orders', '0001_initial'),
+        ("orders", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='number',
-            field=phonenumber_field.modelfields.PhoneNumberField(default='+375336314010', max_length=128, region='BY'),
+            model_name="order",
+            name="number",
+            field=phonenumber_field.modelfields.PhoneNumberField(
+                default="+375336314010", max_length=128, region="BY"
+            ),
             preserve_default=False,
         ),
     ]

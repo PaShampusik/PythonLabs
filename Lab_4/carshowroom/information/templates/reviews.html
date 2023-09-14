@@ -1,0 +1,68 @@
+{% extends "showroom/base.html" %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Отзывы</h1>
+    <div class="row">
+        {% for review in reviews %}
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ review.name }}</h5>
+                    <p class="card-text">Оценка: {{ review.rating }}</p>
+                    <p class="card-text">{{ review.text }}</p>
+                    <p class="card-text">Дата: {{ review.date_added }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'information:add_review' %}" class="btn btn-primary">Добавить отзыв</a>
+    {% else %}
+    <a href="{% url 'account:login' %}" class="btn btn-primary">Добавить отзыв</a>
+    {% endif %}
+</div>
+
+<!-- Форма для добавления отзыва -->
+<div class="modal fade" id="addReviewModal" tabindex="-1" role="dialog" aria-labelledby="addReviewModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addReviewModalLabel">Добавить отзыв</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'information:save_review' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="reviewText">Текст отзыва:</label>
+                        <textarea class="form-control" id="reviewText" name="text" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="ratingSelect">Оценка:</label>
+                        <select class="form-control" id="ratingSelect" name="rating">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

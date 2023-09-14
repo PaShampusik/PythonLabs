@@ -1,0 +1,26 @@
+{% extends "showroom/base.html" %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Контакты</h1>
+    <div class="row">
+        {% for employee in employees %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ employee.photo.url }}" class="card-img-top" alt="{{ employee.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ employee.name }}</h5>
+                    <p class="card-text">{{ employee.description }}</p>
+                    <p class="card-text">Телефон: {{ employee.phone }}</p>
+                    <p class="card-text">Email: {{ employee.email }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
