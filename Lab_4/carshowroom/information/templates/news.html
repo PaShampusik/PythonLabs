@@ -5,21 +5,27 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<body class="container">
     <h1>Новости</h1>
     <div class="row">
         {% for article in articles %}
-        <div class="col-md-4">
+        <section class="col-md-4">
             <div class="card mb-4">
-                <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+                <img src="{{ article.image.url }}" class="card-img-top" width = "450" height = "280"alt="{{ article.title }}">
                 <div class="card-body">
-                    <h5 class="card-title">{{ article.title }}</h5>
-                    <p class="card-text">{{ article.summary }}</p>
+                    <h2 class="card-title">{{ article.title }}</h5>
+                    <article class="card-text">{{ article.summary }}</article>
                     <a href="{{ article.get_absolute_url }}" class="btn btn-primary">Читать далее</a>
                 </div>
             </div>
-        </div>
+        </section>
         {% endfor %}
     </div>
-</div>
+
+    <h3><em>Как бы реклама, но это просто использование IFrame</em></h3>
+    <iframe src="https://made4life.by/katalog/nabor-sportivnogo-pitaniya/nabor-dlya-rosta-suxoj-myishechnoj-massyi-idealnyij-relef.html?utm_source=yandex&utm_medium=cpc&utm_campaign=%7BТоварная_кампания_made4life_by_от_15_05_23%7D&utm_content=%7BТоварная_кампания_made4life_by_от_15_05_23%7D&utm_term=&yclid=15703742375985676287"
+    height="400" width = "800">
+
+    </iframe>
+</body>
 {% endblock %}

@@ -92,3 +92,17 @@ class ContactsView(View):
 def privacy_policy_page(request):
     return render(request, "privacy.html")
 
+def save_review(request):
+    if request.method == 'POST':
+        text = request.POST.get('text')
+        rating = request.POST.get('rating')
+        name = request.POST.get('name')
+        user = None
+        if request and hasattr(request, "user"):
+            user = request.user
+        review = Review.objects.create(text=text, rating=rating, user = user, name = name)
+
+        return redirect('information:reviews')  
+    
+    return redirect('showroom:product_list')
+

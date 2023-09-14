@@ -98,11 +98,6 @@ body {
     padding: 0;
 }
 
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
 
 .footer {
     background-color: #333;
@@ -110,7 +105,10 @@ body {
     padding: 20px;
     margin-top: auto;
 }
-
+#content {
+    min-height: calc(100vh - 120px);
+    /* 80px header + 40px footer = 120px  */
+}
 a.button,
 input[type="submit"] {
     color: #fff;
