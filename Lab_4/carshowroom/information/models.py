@@ -6,11 +6,11 @@ from django.contrib.auth.models import User
 class Article(models.Model):
     title = models.CharField(max_length=200)
     summary = models.TextField()
-    image = models.ImageField(upload_to='articles/')
+    image = models.ImageField(upload_to="articles/")
     content = models.TextField()
 
     def get_absolute_url(self):
-        return reverse('information:news', args=[])
+        return reverse("information:news", args=[])
 
 
 class FAQ(models.Model):
@@ -24,7 +24,7 @@ class FAQ(models.Model):
 
 class Employee(models.Model):
     name = models.CharField(max_length=200)
-    photo = models.ImageField(upload_to='employees/')
+    photo = models.ImageField(upload_to="employees/")
     description = models.TextField()
     phone = models.CharField(max_length=20)
     email = models.EmailField()

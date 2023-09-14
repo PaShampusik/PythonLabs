@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block title %}
+<title>News</title>
 {% endblock %}
 
 {% block content %}
@@ -15,9 +16,14 @@
                 <div class="card-body">
                     <h2 class="card-title">{{ article.title }}</h5>
                     <article class="card-text">{{ article.summary }}</article>
-                    <a href="{{ article.get_absolute_url }}" class="btn btn-primary">Читать далее</a>
+                    <details>
+                        <summary>Читать далее</summary>
+                        <div id="article">                            
+                            <p>{{article.content}}</p>                            
+                        </div>
+                    </details>
                 </div>
-            </div>
+            </div>            
         </section>
         {% endfor %}
     </div>

@@ -11,7 +11,7 @@ urlpatterns = [
     path("qa/", views.QAView.as_view(), name="qa"),
     path("reviews/", views.ReviewListView.as_view(), name="reviews"),
     path("promotions/", views.PromotionsView.as_view(), name="promotions"),
-    path('add/', views.AddReviewView.as_view(), name='add_review'),
-    path('save/', views.SaveReviewView.as_view(), name='save_review'),
-    path("save_review", views.save_review, name="save_review")
+    path("add/", views.AddReviewView.as_view(), name="add_review"),
+    path("save/", views.SaveReviewView.as_view(), name="save_review"),
+    path("save_review", views.save_review, name="save_review"),
 ]

@@ -89,8 +89,7 @@ def statistics(request):
 class ProductUpdateView(UpdateView):
     model = Product
     template_name = "product_update.html"
-    fields = ["category", "name", "slug",
-              "image", "description", "price", "stock"]
+    fields = ["category", "name", "slug", "image", "description", "price", "stock"]
     success_url = reverse_lazy(
         "showroom:product_list"
     )  # Перенаправление после успешного обновления
@@ -128,8 +127,7 @@ class ProductDeleteView(DeleteView):
 class ProductCreateView(CreateView):
     model = Product
     template_name = "product_create.html"
-    fields = ["category", "name", "slug",
-              "image", "description", "price", "stock"]
+    fields = ["category", "name", "slug", "image", "description", "price", "stock"]
     success_url = reverse_lazy(
         "showroom:product_list"
     )  # Перенаправление после успешного создания

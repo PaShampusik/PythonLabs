@@ -2,10 +2,11 @@
 {% load static %}
 
 {% block title %}
+<title>FAQ</title>
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<body class="container">
     <h1>Вопросы и ответы</h1>
     <div class="accordion" id="faqAccordion">
         {% for faq in faqs %}
@@ -19,5 +20,5 @@
         </div>
         {% endfor %}
     </div>
-</div>
+</body>
 {% endblock %}

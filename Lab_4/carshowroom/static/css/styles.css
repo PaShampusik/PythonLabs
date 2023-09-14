@@ -91,6 +91,51 @@ a:hover {
     color: #77b6e2;
 }
 
+/* Стилизация элемента <summary> */
+summary {
+    cursor: pointer;
+    /* Изменение курсора при наведении */
+    outline: none;
+    /* Удаление контура фокуса */
+    font-weight: bold;
+    /* Установка жирного шрифта */
+}
+
+/* Изменение внешнего вида <summary> при раскрытии */
+summary::-webkit-details-marker {
+    display: none;
+    /* Скрытие маркера */
+}
+
+/* Добавление кастомного маркера при раскрытии */
+summary::before {
+    content: "+";
+    /* Отображение кастомного маркера */
+    display: inline-block;
+    margin-right: 5px;
+    transform: rotate(0deg);
+    /* Изначально не повернут */
+    transition: transform 0.2s ease;
+    /* Плавный переход при повороте */
+}
+
+/* Поворот кастомного маркера при раскрытии */
+details[open] summary::before {
+    transform: rotate(45deg);
+}
+
+/* Скрытие содержимого <details> по умолчанию */
+details:not([open])>*:not(summary) {
+    display: none;
+}
+
+/* Стилизация блока с текстом статьи */
+#article {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
 html,
 body {
     height: 100%;

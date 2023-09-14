@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 
 # Media
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -68,7 +68,7 @@ CART_SESSION_ID = "cart"
 
 ROOT_URLCONF = "carshowroom.urls"
 
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'information/templates')]
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, "information/templates")]
 
 TEMPLATES = [
     {

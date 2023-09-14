@@ -1,29 +1,38 @@
 {% extends "showroom/base.html" %}
 
+{% block title %}
+<title>About</title>
+{% endblock %}
+
 {% block content %}
 {% load static %}
+
 <body class="container">
     <div class="row">
         <div class="col-md-6">
             <h2>Информация о компании</h2>
-            <p>Проект, созданный в <dfn title = "Белорусский Государственный Университет Информатики и радиоэлектроники">БГУИР с 
-                помощью <dfn title = "Django">Django</dfn> Как говорил Маяковский: <wbr><q>Кто любил,<wbr>уж тот любить не может,<br>кто 
-                    сгорел,<wbr> того на подожжешь. </q> <br>Время встречи - <time datetime="12:25">0:25 pm</time><br>
-                <a href="#star">Звезда тут</a>
-                    <blockquote><Pre>
+            <p>Проект, созданный в <dfn
+                    title="Белорусский Государственный Университет Информатики и радиоэлектроники">БГУИР с
+                    помощью <dfn title="Django">Django</dfn> Как говорил Маяковский: <wbr><q>Кто
+                        любил,<wbr>уж тот любить не может,<br>кто
+                        сгорел,<wbr> того на подожжешь. </q> <br>Время встречи - <time datetime="12:25">0:25
+                        pm</time><br>
+                    <a href="#star">Звезда тут</a>
+                    <blockquote>
+                        <Pre>
                         Сердцу ни грамма покоя.<br>
                         Рушит стандарта устои<br>
                         Пылкая страсть, что кипит.<br>
                         Снова покой позабыт.<br>
-                        </blockquote>
-                </Pre>
-                
+                        </Pre>
+                    </blockquote>
 
-                <p><a id = "star"></a>Это ->* звезда</p>
-                <p><a href ="#table">А тут таблица</a></p>
-                <p><a href="#code">Это написал тот самый программист</a></p>
-</p>
-<Hr>
+
+                        <p><a id="star"></a>Это ->* звезда</p>
+                        <p><a href="#table">А тут таблица</a></p>
+                        <p><a href="#code">Это написал тот самый программист</a></p>
+            </p>
+            <Hr>
         </div>
         <div class="col-md-6">
             <h2>Видео</h2>
@@ -47,13 +56,18 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ last_article.title }}</h5>
                     <p class="card-text">{{ last_article.summary }}</p>
-                    <a href="{{ article.get_absolute_url }}" class="btn btn-primary">Читать далее</a>
+                    <details>
+                        <summary>Читать далее</summary>
+                        <div id="article">
+                            <p>{{last_article.content}}</p>
+                        </div>
+                    </details>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <h2>Логотип</h2>
-            <img src = "{% static 'img/i.png' %}">
+            <img src="{% static 'img/i.png' %}">
         </div>
         <div class="col-md-6">
             <h2>История по годам</h2>
@@ -70,7 +84,7 @@
             <h2>Реквизиты</h2>
             <p>Укажите здесь реквизиты вашей компании, такие как название, адрес, контактные данные и др.</p>
         </div>
-        <div class="col-md-6" contenteditable="false" lang = "rus">
+        <div class="col-md-6" contenteditable="false" lang="rus">
             <h2>Сертификат</h2>
             <p>Единый реестр автосалонов</p>
             <pre>
@@ -80,7 +94,7 @@
         </div>
     </div>
 
-    <pre id = "code">
+    <pre id="code">
     <code>
     function greet() {
         console.log("Hello, world!");
@@ -88,7 +102,7 @@
     </code>
     </pre>
 
-    <table id = "table">
+    <table id="table">
         <thead>
             <tr>
                 <th colspan="2">Заголовок 1</th>
@@ -117,11 +131,11 @@
                 <td headers="Подзаголовок 3">Ячейка 3-3</td>
             </tr>
         </tbody>
-    </table>  
+    </table>
 
     <br>
     <br>
-    
+
     <figure>
         <figcaption>Using the code element again and figure</figcaption>
         <code>
