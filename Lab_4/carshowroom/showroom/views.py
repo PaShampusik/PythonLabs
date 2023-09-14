@@ -76,7 +76,7 @@ def statistics(request):
     plt.xticks(rotation=45)
     plt.tight_layout()
     # Сохраняем график во временном файле
-    chart_path = "media/graph.png"
+    chart_path = "carshowroom/static/img/graph.png"
     plt.savefig(chart_path)
     plt.close()
     # Передаем данные в шаблон и отображаем страницу статистики
@@ -89,7 +89,8 @@ def statistics(request):
 class ProductUpdateView(UpdateView):
     model = Product
     template_name = "product_update.html"
-    fields = ["category", "name", "slug", "image", "description", "price", "stock"]
+    fields = ["category", "name", "slug",
+              "image", "description", "price", "stock"]
     success_url = reverse_lazy(
         "showroom:product_list"
     )  # Перенаправление после успешного обновления
@@ -127,7 +128,8 @@ class ProductDeleteView(DeleteView):
 class ProductCreateView(CreateView):
     model = Product
     template_name = "product_create.html"
-    fields = ["category", "name", "slug", "image", "description", "price", "stock"]
+    fields = ["category", "name", "slug",
+              "image", "description", "price", "stock"]
     success_url = reverse_lazy(
         "showroom:product_list"
     )  # Перенаправление после успешного создания

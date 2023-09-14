@@ -15,12 +15,44 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ employee.name }}</h5>
                     <p class="card-text">{{ employee.description }}</p>
-                    <p class="card-text">Телефон: {{ employee.phone }}</p>
+                    <p class="card-text">Phone: {{ employee.phone }}</p>
                     <p class="card-text">Email: {{ employee.email }}</p>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
+    <h2 class="h2">Vacancies</h2>
+    <ul class="list-group">
+
+        <details class="list-group-item list-group-item-action accordion-body">
+            <summary class="accordion-button">Manager
+                <pre>   </pre> <span class="badge bg-primary rounded-pill">300-400$</span>
+            </summary>
+            <br>
+            Responsibilities: Controlling users and orders
+            <br>
+            <br>
+            Requirements: Previous retail management experience, strong leadership and organizational skills, knowledge
+            of
+            the toy industry, exceptional communication and problem-solving abilities.
+            <br><br><br>
+        </details>
+
+        <details class="list-group-item list-group-item-action accordion-body">
+            <summary class="accordion-button">Admin
+                <pre>   </pre> <span class="badge bg-primary rounded-pill">1000-1100$</span>
+            </summary>
+            <br>
+            <br>
+            Responsibilities: Adding new cars to catalog, adding new personal
+            <br>
+            <br>
+            Requirements: Friendly and approachable demeanor, excellent customer service skills, ability to work in a
+            team,
+            knowledge or interest in toys, good communication and sales skills. 
+        </details>
+    </ul>
+
 </div>
 {% endblock %}

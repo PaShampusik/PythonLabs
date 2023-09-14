@@ -15,17 +15,18 @@
     </div>
 </div>
 
+
 <div id="sidebar">
     <h3>Categories</h3>
     <ul>
-    <li {% if category == "All"%}class="selected" {% else %}class = "non-selected" {% endif%}>
-        <a href="{% url 'showroom:product_list' %}">All</a>
-    </li>
-    {% for c in categories %}
-        <li {% if c.slug == category.slug %}class="selected" {% endif %}>
+        <li>
+            <a href="{% url 'showroom:product_list' %}">All</a>
+        </li>
+        {% for c in categories %}
+        <li>
             <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
         </li>
-    {% endfor %}
+        {% endfor %}
     </ul>
 </div>
 

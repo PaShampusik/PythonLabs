@@ -9,7 +9,7 @@ class Article(models.Model):
     content = models.TextField()
 
     def get_absolute_url(self):
-        return reverse('article_detail', args=[str(self.id)])
+        return reverse('information:news', args=[])
     
 
 class FAQ(models.Model):

@@ -1,6 +1,6 @@
-{% load static %}
 <!DOCTYPE html>
 <html>
+{% load static %}
 
 <head>
     <meta charset="utf-8" />
@@ -30,7 +30,9 @@
             {% else %}
             <a href="{% url 'account:logout' %}" class="btn btn-light">Log out</a>
             {% endif %}
-
+            <p id="current-time"
+                style="width: 100%; text-align: center; color: black;margin: 0 auto; position: relative;">
+            </p>
             <a href="{% url 'information:about'%}" class="btn btn-light">О компании</a>
             <a href="{% url 'information:news' %}" class="btn btn-light">Новости</a>
             <a href="{% url 'information:contacts' %}" class="btn btn-light">Контакты</a>
@@ -50,37 +52,32 @@
             {% endif %}
             {% endwith %}
         </nav>
-        
+
 
     </header>
 
     <div id="content">
         {% block content %}
         {% endblock %}
-    </div>        
-    
+    </div>
+
     <div class="wrapper">
         <!-- Your page content here -->
-    
+
         <footer class="footer">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <ul class="list-inline">
-                            <li class="list-inline-item">
-                                <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="text-muted">© 2023 Your Company. All rights reserved.</p>
-                    </div>
+                <div class="col-md-6">
+                    <a href="https://av.by/" target="_blank">
+                        <img style = "height: 40px;
+    width: 80px;
+    overflow: hidden;" src="{% static 'img/avby.png' %}" alt="Example 1" class="company-logo" />
+                    </a>
+                    <a href="https://atlantm.by/" target="_blank">
+                        <img style = "height: 40px;
+    width: 80px;
+    overflow: hidden;" src="{% static 'img/atlantm.png' %}" alt="Example 2" class="company-logo" />
+                    </a>
+                    <p class="text-muted">© 2023 Your Company. All rights reserved.</p>
                 </div>
             </div>
         </footer>

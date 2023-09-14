@@ -1,7 +1,7 @@
 {% extends "showroom/base.html" %}
-{% load static %}
 
 {% block content %}
+{% load static %}
 <div class="container">
     <div class="row">
         <div class="col-md-6">
@@ -10,10 +10,30 @@
         </div>
         <div class="col-md-6">
             <h2>Видео</h2>
-            <p>Вставьте видео о вашей компании с помощью соответствующего видеоплеера.</p>
+            <video name='demo' controls autoplay width='100%' height='60%' autoplay loop>
+                <source src="{% static 'vid/car.mp4' %}" type="video/mp4">
+                </source>
+            </video>
+        </div>
+        <div class="col-md-6">
+            <h2>Видео</h2>
+            <audio name='demo' controls autoplay width='100%' height='60%' autoplay loop>
+                <source src="{% static 'audio/gimn.mp3' %}" type="audio/mp3">
+                </source>
+            </audio>
         </div>
     </div>
     <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ last_article.image.url }}" class="card-img-top" alt="{{ last_article.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ last_article.title }}</h5>
+                    <p class="card-text">{{ last_article.summary }}</p>
+                    <a href="{{ article.get_absolute_url }}" class="btn btn-primary">Читать далее</a>
+                </div>
+            </div>
+        </div>
         <div class="col-md-6">
             <h2>Логотип</h2>
             <p>Разместите здесь логотип вашей компании.</p>
