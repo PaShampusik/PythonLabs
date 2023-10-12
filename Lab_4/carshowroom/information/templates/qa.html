@@ -6,16 +6,22 @@ FAQ
 {% endblock %}
 
 {% block content %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/faq.css' %}">
+{% endblock %}
 <body class="container">
     <h1>Вопросы и ответы</h1>
     <div class="accordion" id="faqAccordion">
         {% for faq in faqs %}
         <div class="card">
-            <details class="accordion-item m-4">
+            <details class="accordion-item">
                 <summary class="accordion-button" type="button" aria-expanded="true">
                     {{faq.question}}
                 </summary>
-                {{faq.answer}}
+                <div class="accordion-content">
+                    {{faq.answer}}
+                </div>
             </details>
         </div>
         {% endfor %}

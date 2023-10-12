@@ -1,0 +1,121 @@
+.item-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    background-color: #f9f9f9;
+    ;
+    padding: 20px;
+}
+
+.item {
+    padding: 10px;
+    border: 1px solid #f9f9f9;
+    /* Молочный вторичный цвет рамки */
+}
+
+.item-image {
+    width: 350px;
+    height: 200px;
+    border-radius: 40;
+}
+
+.main-image {
+    width: 100%;
+    /* Set the width of the image to 100% */
+    height: 20%;
+}
+
+.main-image-block {
+    width: 100%;
+    overflow: hidden;
+}
+
+.sort-buttons {
+    display: flex;
+}
+
+.sort-buttons a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    color: #333;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.sort-buttons a:last-child {
+    margin-right: 0;
+}
+
+#sidebar {
+    background-color: #f9f9f9;
+    /* Background color for the sidebar */
+    padding: 20px;
+    /* Padding around the content */
+}
+
+h3 {
+    color: #333;
+    /* Color for the heading text */
+    font-size: 18px;
+    /* Font size for the heading */
+    margin-bottom: 10px;
+    /* Spacing below the heading */
+}
+
+ul {
+    list-style-type: none;
+    /* Remove bullet points from the list */
+    padding: 0;
+    /* Remove default padding */
+    margin: 0;
+    /* Remove default margin */
+    display: flex;
+    /* Use flexbox to arrange the list items horizontally */
+    flex-wrap: wrap;
+    /* Allow items to wrap to the next line if needed */
+}
+
+li {
+    margin-right: 10px;
+    /* Spacing between list items */
+}
+
+.shadowtext1 {
+    text-shadow: 6px 6px 12px black;
+    color: black;
+}
+
+a:hover {
+    background-color: #eaeaea;
+    /* Background color for links on hover */
+}
+
+.circle {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ff0000;
+    animation: moveCircle 5s linear infinite;
+}
+
+@keyframes moveCircle {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.banner {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background-color: #f9f9f9;
+    overflow: hidden;
+}

@@ -1,0 +1,38 @@
+.card-text::after {
+    content: "...";
+}
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+}
+
+.article {
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.card-img-top {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.card-title {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.card-text {
+    font-size: large;
+    max-height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

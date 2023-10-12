@@ -4,70 +4,62 @@
 About
 {% endblock %}
 
-{% block content %}
 {% load static %}
+{% block content %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/about.css' %}">
+{% endblock %}
 
 <body class="container">
     <div class="row">
-        <div class="col-md-6">
-            <h2>Информация о компании</h2>
-            <p>Проект, созданный в <dfn
-                    title="Белорусский Государственный Университет Информатики и радиоэлектроники">БГУИР с
-                    помощью <dfn title="Django">Django</dfn> Как говорил Маяковский: <wbr><q>Кто
-                        любил,<wbr>уж тот любить не может,<br>кто
-                        сгорел,<wbr> того на подожжешь. </q> <br>Время встречи - <time datetime="12:25">0:25
-                        pm</time><br>
-                    <a href="#star">Звезда тут</a>
-                    <blockquote>                      
-                        Сердцу ни грамма покоя.<br>
-                        Рушит стандарта устои<br>
-                        Пылкая страсть, что кипит.<br>
-                        Снова покой позабыт.<br>                      
-                    </blockquote>
-
-
-                        <p><a id="star"></a>Это ->* звезда</p>
-                        <p><a href="#table">А тут таблица</a></p>
-                        <p><a href="#code">Это написал тот самый программист</a></p>
-            </p>
-            <Hr>
-        </div>
-        <div class="col-md-6">
-            <h2>Видео</h2>
-            <video name='demo' controls autoplay width='100%' height='60%' autoplay loop>
-                <source src="{% static 'vid/car.mp4' %}" type="video/mp4">
-                </source>
-            </video>
-        </div>
-        <div class="col-md-6">
-            <h2>Видео</h2>
-            <audio name='demo' controls autoplay width='100%' height='60%' autoplay loop>
-                <source src="{% static 'audio/gimn.mp3' %}" type="audio/mp3">
-                </source>
-            </audio>
-        </div>
+        <h2>Информация о компании</h2>
+        <p>Проект, созданный в <dfn title="Белорусский Государственный Университет Информатики и радиоэлектроники">БГУИР
+                с
+                помощью <dfn title="Django">Django</dfn> Как говорил Маяковский: <wbr><q>Кто
+                    любил,<wbr>уж тот любить не может,<br>кто
+                    сгорел,<wbr> того на подожжешь. </q> <br>Время встречи - <time datetime="12:25">0:25
+                    pm</time><br>
+                <blockquote>
+                    Сердцу ни грамма покоя.<br>
+                    Рушит стандарта устои<br>
+                    Пылкая страсть, что кипит.<br>
+                    Снова покой позабыт.<br>
+                </blockquote>
+                <p><a href="#table">А тут таблица</a></p>
+                <p><a href="#code">Это написал тот самый программист</a></p>
+        </p>
+        <Hr>
+    </div>
+    <div class="video">
+        <h2>Видео</h2>
+        <video name='demo' controls autoplay width='100%' height='60%' loop>
+            <source src="{% static 'vid/car.mp4' %}" type="video/mp4">
+            </source>
+        </video>
+    </div>
+    <div class="audio">
+        <h2>Аудио</h2>
+        <audio name='demo' controls autoplay width='100%' height='60%' autoplay=false muted>
+            <source src="{% static 'audio/gimn.mp3' %}" type="audio/mp3">
+            </source>
+        </audio>
+    </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <img src="{{ last_article.image.url }}" class="card-img-top" alt="{{ last_article.title }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ last_article.title }}</h5>
-                    <p class="card-text">{{ last_article.summary }}</p>
-                    <details>
-                        <summary>Читать далее</summary>
-                        <div id="article">
-                            <p>{{last_article.content}}</p>
-                        </div>
-                    </details>
+        <img src="{{ last_article.image.url }}" class="card-img-top" alt="{{ last_article.title }}">
+        <div class="card-body">
+            <h2 class="card-title">{{ last_article.title }}</h2>
+            <p class="card-text">{{ last_article.summary }}</p>
+            <details>
+                <summary>Читать далее</summary>
+                <div id="article">
+                    <p>{{last_article.content}}</p>
                 </div>
-            </div>
+            </details>
         </div>
-        <div class="col-md-6">
-            <h2>Логотип</h2>
-            <img src="{% static 'img/i.png' %}">
-        </div>
-        <div class="col-md-6">
+        <br><br><br>
+        <div class="history">
             <h2>История по годам</h2>
             <ul>
                 <li>2020 - Основание компании</li>
@@ -77,48 +69,30 @@ About
             </ul>
         </div>
     </div>
+    <br><br><br>
     <div class="row">
-        <div class="col-md-6">
+        <div class="rekvisites">
             <h2>Реквизиты</h2>
             <h3>Потовый индекс: 222222, Минск, Грушевская, 86, 93</h3>
         </div>
-        <div class="col-md-6" contenteditable="false" lang="rus">
-            <h2 style = "text-align: center; font-size: 23;">Сертификат</h2>
-            <h3 style = "text-align: center; font-size: 18;">Единый реестр автосалонов</h3>
-            <pre style = "font-size: 17; text-align: justify;">
-                Настоящим удостоверяется, что автосалон "Название автосалона" является официальным дилером автомобилей и
-                автотранспортных средств, предлагаемых следующим производителям:<br>
-                
-                "Производитель1"
-                "Производитель2"
-                "Производитель3"
-                <br>
-                Автосалон "Название автосалона" занимается продажей и обслуживанием автомобилей указанных производителей, предлагая
-                широкий выбор моделей, аксессуаров и дополнительных услуг.
-                
-                Данный сертификат подтверждает, что автосалон "Название автосалона" соответствует высоким стандартам качества и
-                профессионализма в автомобильной индустрии. Он имеет все необходимые лицензии и разрешения для осуществления своей
-                деятельности и предлагает клиентам надежные и непревзойденные услуги.
-                
-                Мы гарантируем, что автосалон "Название автосалона" предлагает только оригинальные и сертифицированные автомобили,
-                которые прошли все необходимые проверки и испытания. Команда профессиональных сотрудников автосалона "Название
-                автосалона" всегда готова оказать квалифицированную помощь и консультацию по выбору, приобретению и обслуживанию
-                автомобиля.
-                
-                Настоящий сертификат выдан с целью подтверждения надежности и репутации автосалона "Название автосалона". Мы гордимся
-                предоставляемыми услугами и стремимся к удовлетворению потребностей наших клиентов в автомобилях высокого качества.
-                
-                Дата выдачи: [дата выдачи сертификата]
-                Срок действия: Бессрочно
-                
-                Подпись: ___________________
-                (Представитель автосалона "Название автосалона")
-                
-                Печать: <i>[печать автосалона]</i>
-            </pre>
-        </div>
+        <section>
+            <div class="certificate">
+                <br><br><br><br><br><br><br><br><br><br><br>
+                <h1>Сертификат</h1>
+                <p>Настоящим удостоверяется, что</p>
+                <h2>Автосалон BoxBox</h2>
+                <p>был признан сертифицированным автосалоном в соответствии с высокими стандартами качества
+                    оказываемых услуг.
+                </p>
+                <p>Сертификат выдан: 31 сентября 1998 года</p>
+                <p>Срок действия: Бессрочно</p>
+                <p>Сертификационный номер: 988765324</p>
+                <p>Подпись: __________________________</p>
+            </div>
+        </section>
     </div>
 
+    <br><br>
     <pre id="code">
     <code>
     function greet() {
@@ -127,43 +101,34 @@ About
     </code>
     </pre>
 
-<div class="col-md-4 d-flex align-items-end">
-    <a class="mb-3 mb-md-0 text-body-secondary" href="{% static 'img/i.png'%}" download>Image</a>
-</div>
-<br><br>
 
-    <table id="table">
-        <thead>
+    <br><br>
+
+    <section>
+        <table>
+            <caption>Заголовок таблицы</caption>
             <tr>
-                <th colspan="2">Заголовок 1</th>
-                <th>Заголовок 2</th>
+                <th rowspan="2">Заголовок 1</th>
+                <th colspan="2">Заголовок 2</th>
+                <th>Заголовок 3</th>
             </tr>
             <tr>
                 <th>Подзаголовок 1</th>
                 <th>Подзаголовок 2</th>
                 <th>Подзаголовок 3</th>
             </tr>
-        </thead>
-        <tbody>
             <tr>
-                <td headers="Подзаголовок 1" colspan="2">Ячейка 1-1</td>
-                <td headers="Подзаголовок 2">Ячейка 1-2</td>
+                <td>Ячейка 1,1</td>
+                <td rowspan="2">Ячейка 1,2 (объединена по вертикали)</td>
+                <td colspan="2"></td>
             </tr>
             <tr>
-                <td headers="Подзаголовок 1">Ячейка 2-1</td>
-                <td headers="Подзаголовок 2">Ячейка 2-2</td>
-                <td headers="Подзаголовок 3">Ячейка 2-3</td>
+                <td>Ячейка 2,1</td>
+                <td>Ячейка 2,3</td>
             </tr>
-            <tr>
-                <td headers="Подзаголовок 1">Ячейка 3-1</td>
-                <td headers="Подзаголовок 2">Ячейка 3-2</td>
-                <td headers="Подзаголовок 3">Ячейка 3-3</td>
-            </tr>
-        </tbody>
-    </table>
+        </table>
+    </section>
 
-    <br>
-    <br>
 
     <figure>
         <figcaption>Using the code element again and figure</figcaption>

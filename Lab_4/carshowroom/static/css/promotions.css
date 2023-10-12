@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+li {
+    margin-bottom: 5px;
+}
+
+p {
+    margin: 10px 0;
+}
+
+/* Styles for active promotions */
+ul.active-promotions li {
+    color: green;
+}
+
+/* Styles for archived promotions */
+ul.archived-promotions li {
+    color: gray;
+}
+
+body {
+    margin-top: 100px;
+}

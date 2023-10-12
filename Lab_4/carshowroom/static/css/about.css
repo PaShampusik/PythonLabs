@@ -1,0 +1,184 @@
+.history li {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 5px;
+}
+
+.history li:before {
+    content: "•";
+    color: #999999;
+    margin-right: 5px;
+}
+
+.rekvisites {
+    margin-bottom: 30px;
+}
+
+.rekvisites h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.rekvisites h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #555555;
+    font-weight: bold;
+}
+
+.rekvisites h3::before {
+    content: "⚙";
+    display: inline-block;
+    margin-right: 5px;
+    color: #FF9900;
+}
+
+.certificate {
+    height: 600px;
+    width: 400px;
+    border: 8px solid;
+    border-image: linear-gradient(to right, #0074cc, #2ea44f);
+    border-image-slice: 1;
+    background-image: url('/static/img/certificate.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    text-align: center;
+}
+
+.certificate h1 {
+    color: #ffffff;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.certificate h2 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+.certificate p {
+    color: #ffffff;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.certificate p:last-child {
+    margin-bottom: 0;
+}
+
+.certificate p.signature {
+    position: relative;
+    z-index: 1;
+}
+
+.certificate p.signature::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(to right, #000000, #ffffff);
+    z-index: -1;
+}
+
+.card-img-top {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 200px;
+    display: block;
+    margin: 0 auto;
+}
+
+.card-body {
+    position: relative;
+}
+
+#article {
+    display: flex;
+    flex-direction: column;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table,
+th,
+td {
+    border: 1px solid #000;
+}
+
+td:empty {
+    background-color: #f2f2f2;
+}
+
+caption {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    caption-side: bottom;
+}
+
+th,
+td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+th,
+td:nth-child(odd) {
+    background-color: #ddd;
+}
+
+table {
+    margin: 0 auto;
+    width: 80%;
+}
+
+input:not(:disabled),
+textarea:not(:disabled),
+select:not(:disabled) {
+    padding: 1px;
+}
+
+/* Обязательные элементы формы */
+input[required],
+textarea[required],
+select[required] {
+    padding: 20px;
+}
+
+/* Заблокированные элементы формы */
+input:disabled,
+textarea:disabled,
+select:disabled {
+    padding: 30px;
+}
+
+/* Элементы со значениями вне диапазона */
+input[type="number"]:out-of-range,
+input[type="range"]:out-of-range {
+    background-color: red;
+}
+
+/* Включенные флажки */
+input[type="checkbox"]:checked {
+    background-color: #0074cc;
+}
+
+/* Включенные переключатели */
+input[type="radio"]:checked {
+    background-color: #0074cc;
+}

@@ -6,12 +6,18 @@ Reviews
 {% endblock %}
 
 {% block content %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/reviews.css' %}">
+{% endblock %}
+
 <body class="container">
+    <br><br><br><br><br><br>
     <h1>Отзывы</h1>
     <div class="row">
         {% for review in reviews %}
-        <div class="col-md-6">
-            <div class="card mb-4">
+        <div class="">
+            <div class="">
                 <div class="card-body">
                     <h3 class="card-title">{{ review.name }}</h3>
                     <h4 class="card-text">Оценка: {{ review.rating }}</h4>
@@ -24,21 +30,21 @@ Reviews
     </div>
     <br><br><br>
 
-    
+
 </body>
 
 <!-- Форма для добавления отзыва -->
 {% if user.is_authenticated %}
-<footer> 
+<footer>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="addReviewModalLabel">Добавить отзыв</h3>               
+                <h3 class="modal-title" id="addReviewModalLabel">Добавить отзыв</h3>
             </div>
             <form method="post" action="{% url 'information:save_review' %}">
                 {% csrf_token %}
                 <label>Название отзыва</label>
-                <input type = "text" name = "name">
+                <input type="text" name="name">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="reviewText">Текст отзыва:</label>

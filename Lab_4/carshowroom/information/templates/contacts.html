@@ -6,18 +6,22 @@ Contacts
 {% endblock %}
 
 {% block content %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/contacts.css' %}">
+{% endblock %}
 <body class="container">
     <h1>Контакты</h1>
     <div class="row">
         {% for employee in employees %}
-        <div class="col-md-4">
-            <div itemscope itemtype = "person" class="card mb-4">
-                <img itemprop = "image"src="{{ employee.photo.url }}" class="card-img-top" alt="{{ employee.name }}">
+        <div class="card">
+            <div itemscope itemtype="person">
+                <img itemprop="image" src="{{ employee.photo.url }}" class="card-img-top" alt="{{ employee.name }}">
                 <div class="card-body">
-                    <h2 itemprop = "name" class="card-title">{{ employee.name }}</h2>
-                    <h3 itemprop = "description" class="card-text">{{ employee.description }}</h3>
-                    <h3 itemprop = "phone"class="card-text">Phone: {{ employee.phone }}</h3>
-                    <h3 itemprop = "email" class="card-text">Email: {{ employee.email }}</h3>
+                    <h2 itemprop="name" class="card-title">{{ employee.name }}</h2>
+                    <h3 itemprop="description" class="card-text">{{ employee.description }}</h3>
+                    <h3 itemprop="phone" class="card-text">Phone: {{ employee.phone }}</h3>
+                    <h3 itemprop="email" class="card-text">Email: {{ employee.email }}</h3>
                 </div>
             </div>
         </div>
@@ -25,34 +29,25 @@ Contacts
     </div>
     <h2 class="h2">Vacancies</h2>
     <ul class="list-group">
-
-        <details class="list-group-item list-group-item-action accordion-body">
-            <summary class="accordion-button">Manager
-                <pre>   </pre> <span class="badge bg-primary rounded-pill">300-400$</span>
-            </summary>
-            <br>
-            Responsibilities: Controlling users and orders
-            <br>
-            <br>
-            Requirements: Previous retail management experience, strong leadership and organizational skills, knowledge
-            of
-            the toy industry, exceptional communication and problem-solving abilities.
-            <br><br><br>
-        </details>
-        <br><br><br>
-        <details class="list-group-item list-group-item-action accordion-body">
-            <summary class="accordion-button">Admin
-                <pre>   </pre> <span class="badge bg-primary rounded-pill">1000-1100$</span>
-            </summary>
-            <br>
-            <br>
-            Responsibilities: Adding new cars to catalog, adding new personal
-            <br>
-            <br>
-            Requirements: Friendly and approachable demeanor, excellent customer service skills, ability to work in a
-            team,
-            knowledge or interest in toys, good communication and sales skills. 
-        </details>
+        <li class="list-group-item">
+            <details class="accordion-body">
+                <summary class="accordion-button">Manager <span class="badge bg-primary rounded-pill">$300-400</span>
+                </summary>
+                <p class="description">Responsibilities: Controlling users and orders</p>
+                <p class="description">Requirements: Previous retail management experience, strong leadership and
+                    organizational skills, knowledge of the toy industry, exceptional communication and problem-solving
+                    abilities.</p>
+            </details>
+        </li>
+        <li class="list-group-item">
+            <details class="accordion-body">
+                <summary class="accordion-button">Admin <span class="badge bg-primary rounded-pill">$1000-1100</span>
+                </summary>
+                <p class="description">Responsibilities: Adding new cars to catalog, adding new personal</p>
+                <p class="description">Requirements: Friendly and approachable demeanor, excellent customer service skills,
+                    ability to work in a team, knowledge or interest in toys, good communication and sales skills.</p>
+            </details>
+        </li>
     </ul>
 
 </body>

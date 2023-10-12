@@ -6,32 +6,33 @@ News
 {% endblock %}
 
 {% block content %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/news.css' %}">
+{% endblock %}
+
+
 <body class="container">
     <h1>Новости</h1>
-    <div class="row">
+    <div class="articles-grid">
         {% for article in articles %}
-        <section class="col-md-4">
-            <div class="card mb-4">
-                <img src="{{ article.image.url }}" class="card-img-top" width = "450" height = "280"alt="{{ article.title }}">
+        <section class="article">
+            <div class="card">
+                <img src="{{ article.image.url }}" class="card-img-top" width="450" height="280"
+                    alt="{{ article.title }}">
                 <div class="card-body">
-                    <h2 class="card-title">{{ article.title }}</h5>
+                    <h2 class="card-title">{{ article.title }}</h2>
                     <article class="card-text">{{ article.summary }}</article>
                     <details>
                         <summary>Читать далее</summary>
-                        <div id="article">                            
-                            <p>{{article.content}}</p>                            
+                        <div id="article">
+                            <p>{{ article.content }}</p>
                         </div>
                     </details>
                 </div>
-            </div>            
+            </div>
         </section>
         {% endfor %}
     </div>
-
-    <h3><em>Как бы реклама, но это просто использование IFrame</em></h3>
-    <iframe src="https://made4life.by/katalog/nabor-sportivnogo-pitaniya/nabor-dlya-rosta-suxoj-myishechnoj-massyi-idealnyij-relef.html?utm_source=yandex&utm_medium=cpc&utm_campaign=%7BТоварная_кампания_made4life_by_от_15_05_23%7D&utm_content=%7BТоварная_кампания_made4life_by_от_15_05_23%7D&utm_term=&yclid=15703742375985676287"
-    height="400" width = "800">
-
-    </iframe>
 </body>
 {% endblock %}
