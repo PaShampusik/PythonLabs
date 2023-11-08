@@ -43,6 +43,10 @@
                 <a href="{% url 'information:promotions' %}" class="shadowtext">Промокоды и акции </a>
                 <a href="{% url 'information:privacy_policy' %}" class="shadowtext"><small>Политика
                         конфиденциальности</small></a>
+                <div>
+                    <p id="countdown"></p>
+                </div>
+
                 </h3>
                 {% with total_items=cart|length %}
                 {% if cart|length > 0 %}
@@ -83,5 +87,7 @@
 
 
 </body>
+
+<script type="text/javascript" src="{% static 'js/session.js' %}"></script>
 
 </html>

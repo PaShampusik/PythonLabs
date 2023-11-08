@@ -12,6 +12,7 @@ About
 {% endblock %}
 
 <body class="container">
+
     <div class="row">
         <h2>Информация о компании</h2>
         <p>Проект, созданный в <dfn title="Белорусский Государственный Университет Информатики и радиоэлектроники">БГУИР
@@ -37,6 +38,14 @@ About
             <source src="{% static 'vid/car.mp4' %}" type="video/mp4">
             </source>
         </video>
+    </div>
+    <div class="card">
+        <div class="card-inner">
+            <div class="card-front"></div>
+            <div class="card-back">
+                <img src="{% static 'img/article3.png' %}" alt="Image">
+            </div>
+        </div>
     </div>
     <div class="audio">
         <h2>Аудио</h2>
@@ -77,7 +86,7 @@ About
         </div>
         <section>
             <div class="certificate">
-                <br><br><br><br><br><br><br><br><br><br><br>
+                <br><br><br><br><br><br><br><br><br>
                 <h1>Сертификат</h1>
                 <p>Настоящим удостоверяется, что</p>
                 <h2>Автосалон BoxBox</h2>
@@ -117,7 +126,16 @@ About
                 <th>Подзаголовок 2</th>
                 <th>Подзаголовок 3</th>
             </tr>
-            <tr>
+            <tr>.card-wrapper
+                .card
+                h2 Red it is
+                .content
+                p Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, tellus
+                .card-wrapper
+                .card
+                h2 Green is in
+                .content
+                p Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus, tellus
                 <td>Ячейка 1,1</td>
                 <td rowspan="2">Ячейка 1,2 (объединена по вертикали)</td>
                 <td colspan="2"></td>
@@ -139,4 +157,6 @@ About
     </code>
     </figure>
 </body>
+
+<script type="text/javascript" src="{% static 'js/card.js' %}"></script>
 {% endblock %}

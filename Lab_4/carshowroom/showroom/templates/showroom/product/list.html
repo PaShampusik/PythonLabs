@@ -12,10 +12,25 @@
 {% endblock %}
 
 <div id="carouselExampleControls" class="main-image-block">
-    <img class="main-image" src="{% static 'img/i.png' %}" alt="Image">
-
+    <div class="banner active">
+        <img class="main-image" src="{% static 'img/i.png' %}" alt="Image">
+    </div>
+    <div class="banner">
+        <img class="main-image" src="{% static 'img/article1.png' %}">
+    </div>
+    <div class="banner">
+        <img class="main-image" src="{% static 'img/ID8.jpg' %}">
+    </div>
+    <div class="banner">
+        <img class="main-image" src="{% static 'img/article2.png' %}">
+    </div>
 </div>
-
+{% if user.is_superuser %}
+<form>
+    <label for="interval">Интервал ротации (в секундах):</label>
+    <input type="number" id="interval" min="1" value="5">
+</form>
+{% endif %}
 
 <div id="sidebar">
     <h3>Categories</h3>
@@ -31,10 +46,7 @@
     </ul>
 </div>
 
-<div class="banner">
-    <div class="circle"></div>
-</div>
-
+<div class="circle"></div>
 
 <div class="sort-buttons">
     <a href="{% url 'showroom:product_list' %}?sort=price_asc" class="shadowtext1">Цена (возрастание)</a>
@@ -49,8 +61,11 @@
     {% for product in products %}
     <div class="item">
         <a href="{{ product.get_absolute_url }}">
-            <img class="item-image"
-                src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
+            <div class="item-image-container">
+                <img class="item-image"
+                    src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
+                    data-rotation="0">
+            </div>
         </a>
         <br>
         <a href="{{ product.get_absolute_url }}" class="shadowtext1">{{ product.name }}</a>
@@ -76,4 +91,8 @@
     <h1>Bitcoin Rate</h1>
     <p>{{ rate }}</p>
 </div>
+
+<script type="text/javascript" src="{% static 'js/banner.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/scroll.js' %}"></script>
+
 {% endblock %}

@@ -48,7 +48,8 @@ Reviews
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="reviewText">Текст отзыва:</label>
-                        <textarea class="form-control" id="reviewText" name="text" rows="3"></textarea>
+                        <textarea class="form-control" id="reviewText" name="text" rows="3" pattern=".{10,}"
+                            minlength="10"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="ratingSelect">Оценка:</label>

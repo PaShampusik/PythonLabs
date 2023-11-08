@@ -33,6 +33,13 @@
     color: #FF9900;
 }
 
+.rekvisites h3::after {
+    content: "⚙";
+    display: inline-block;
+    margin-right: 5px;
+    color: #FF9900;
+}
+
 .certificate {
     height: 600px;
     width: 400px;
@@ -178,7 +185,142 @@ input[type="checkbox"]:checked {
     background-color: #0074cc;
 }
 
+p::first-letter {
+    color: #2ea44f;
+}
+
 /* Включенные переключатели */
 input[type="radio"]:checked {
     background-color: #0074cc;
+}
+
+img[src^="images/"] {
+    border-radius: 100px;
+    ;
+}
+
+img[src$=".jpg"] {
+    border-radius: 50px;
+    ;
+}
+
+a[target="blank"] {
+    background-color: #000000;
+}
+
+/* элемент <a>, который имеет класс "btn" */
+a.btn {
+    background-color: #2ea44f;
+}
+
+/* все <li> элементы, которые являются потомками элемента с классом "menu" */
+.body li {
+    background-color: #FF9900;
+}
+
+/* все <ul> элементы, которые являются прямыми дочерними элементами элемента с классом "menu" */
+.menu>ul {
+    background-color: blueviolet;
+}
+
+a:visited {
+    background-color: #0074cc;
+}
+
+a:link {
+    background-color: #ddd;
+}
+
+a:hover {
+    color: #2ea44f;
+}
+
+a:active {
+    color: #000000;
+}
+
+/* Стили для элементов в фокусе */
+:focus {
+    font-size: large;
+}
+
+/* Стили для цитат на английском языке */
+q[lang="en"]::before {
+    content: "“";
+}
+
+q[lang="en"]::after {
+    content: "”";
+}
+
+/* Стили для цитат на русском языке */
+q[lang="ru"]::before {
+    content: "«";
+}
+
+q[lang="ru"]::after {
+    content: "»";
+}
+
+::selection {
+    color: #ffffff;
+    /* изменение цвета текста */
+    background-color: #000000;
+    /* изменение цвета фона */
+}
+
+@media screen and (min-width: 1200px) and (min-height: 800px) {
+
+    header,
+    nav {
+        background-color: #EFEFEF;
+    }
+}
+
+@media screen and (max-width: 767px) and (max-height: 700px) {
+    header,
+    nav {
+        font-size: 34px;
+        background-color: #FAFAFA;
+    }
+}
+
+.card {
+    perspective: 1000px;
+    display: inline-block;
+}
+
+.card-inner {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.card:hover .card-inner {
+    transform: rotateY(20deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.card-front {
+    background-color: #f2f2f2;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.card-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }

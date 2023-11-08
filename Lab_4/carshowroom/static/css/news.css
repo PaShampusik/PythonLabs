@@ -1,38 +1,115 @@
-.card-text::after {
-    content: "...";
+.container {
+    max-width: 1200px;
+    /* Максимальная ширина контейнера */
+    margin: 0 auto;
+    /* Центрирование контейнера на странице */
+    padding: 20px;
+    /* Внутренний отступ контейнера */
 }
 
 .articles-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* Автоматически подстраиваемые колонки с минимальной шириной 300px */
     grid-gap: 20px;
+    /* Расстояние между элементами сетки */
 }
 
 .article {
-    display: flex;
-    flex-direction: column;
+    background-color: #f0f0f0;
+    /* Цвет фона статьи */
+    padding: 20px;
+    /* Внутренний отступ статьи */
 }
 
 .card {
     border: 1px solid #ccc;
+    /* Граница карточки */
     border-radius: 4px;
-    padding: 10px;
+    /* Скругление углов карточки */
+    overflow: hidden;
+    /* Скрытие содержимого, выходящего за пределы карточки */
 }
 
 .card-img-top {
     width: 100%;
     height: auto;
-    border-radius: 4px;
+}
+
+.card-body {
+    padding: 10px;
+    /* Внутренний отступ содержимого карточки */
 }
 
 .card-title {
-    font-size: 18px;
-    margin-top: 10px;
+    margin-top: 0;
+    /* Убираем верхний отступ заголовка */
 }
 
 .card-text {
-    font-size: large;
-    max-height: 100px;
+    margin-bottom: 10px;
+    /* Устанавливаем нижний отступ текста карточки */
+}
+
+#article {
+    margin-top: 10px;
+    /* Верхний отступ раскрывающегося содержимого */
+}
+
+.container {
+    max-width: 1200px;
+    /* Максимальная ширина контейнера */
+    margin: 0 auto;
+    /* Центрирование контейнера на странице */
+    padding: 20px;
+    /* Внутренний отступ контейнера */
+}
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* Автоматически подстраиваемые колонки с минимальной шириной 300px */
+    grid-gap: 20px;
+    /* Расстояние между элементами сетки */
+}
+
+.article {
+    background-color: #f0f0f0;
+    /* Цвет фона статьи */
+    padding: 20px;
+    /* Внутренний отступ статьи */
+}
+
+.card {
+    border: 1px solid #ccc;
+    /* Граница карточки */
+    border-radius: 4px;
+    /* Скругление углов карточки */
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* Скрытие содержимого, выходящего за пределы карточки */
+}
+
+.card-img-top {
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    padding: 10px;
+    /* Внутренний отступ содержимого карточки */
+}
+
+.card-title {
+    margin-top: 0;
+    /* Убираем верхний отступ заголовка */
+}
+
+.card-text {
+    margin-bottom: 10px;
+    /* Устанавливаем нижний отступ текста карточки */
+}
+
+#article {
+    margin-top: 10px;
+    /* Верхний отступ раскрывающегося содержимого */
 }

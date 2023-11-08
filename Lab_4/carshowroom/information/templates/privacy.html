@@ -8,6 +8,23 @@
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/privacy.css' %}">
 {% endblock %}
+<section>
+    <form id="settingsForm">
+        <label>
+            <input type="checkbox" id="fontSizeCheckbox"> Изменить размер шрифта
+        </label>
+        <br>
+
+        <label>
+            <input type="checkbox" id="textColorCheckbox"> Изменить цвет текста
+        </label>
+        <br>
+
+        <label>
+            <input type="checkbox" id="backgroundColorCheckbox"> Изменить цвет фона
+        </label>
+    </form>
+</section>
 
 <section class="line-height text">
     <h1>Политика конфиденциальности</h1>
@@ -44,4 +61,6 @@
 
     <p>Если у вас возникли вопросы или требуется дополнительная информация, пожалуйста, свяжитесь с нами.</p>
 </section>
+
+<script type="text/javascript" src="{% static 'js/generation.js' %}"></script>
 {% endblock %}
