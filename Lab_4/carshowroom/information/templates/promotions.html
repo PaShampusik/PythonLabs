@@ -1,0 +1,44 @@
+{% extends "showroom/base.html" %}
+{% load static %}
+
+{% block title %}
+Promotions
+{% endblock %}
+
+{% block content %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/promotions.css' %}">
+{% endblock %}
+
+
+<head>
+    <title>Промокоды и акции</title>
+</head>
+
+<body>
+    <h1>Промокоды и акции</h1>
+
+    <h2>Действующие промокоды</h2>
+    {% if active_promotions %}
+    <ul>
+        {% for promotion in active_promotions %}
+        <li>{{ promotion.code }} - {{ promotion.description }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>В настоящее время нет действующих промокодов.</p>
+    {% endif %}
+
+    <h2>Архив промокодов</h2>
+    {% if archived_promotions %}
+    <ul>
+        {% for promotion in archived_promotions %}
+        <li>{{ promotion.code }} - {{ promotion.description }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Архив промокодов пуст.</p>
+    {% endif %}
+</body>
+{% endblock %}

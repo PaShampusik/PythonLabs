@@ -1,62 +1,87 @@
-{% load static %}
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>{% block title %}My shop{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-<div id="header">
-    <a href="/" class="logo">My shop</a>
-    <p id="current-time"
-                    style="width: 70%; text-align: center; color: black;margin: 0 auto; position: relative;">
-                </p>
-                {% if user.is_authenticated %}
-                {% if user.is_staff %}
-                    <div>
-                        <a href="{% url 'showroom:product_create' %}" class="btn btn-primary">Добавить продукт</a>
-                    </div>
-                {% endif %}
-            {% endif %}
-    {% if user.is_superuser %}
-    <a href="{% url "showroom:statistics" %}" class="button light"> STATISTICS </a> 
-    {% endif %}
-    {% if not user.is_authenticated %}
-        <a href="{% url "account:login" %}" class="button light"> Log in </a> 
-        <a href="{% url "account:register" %}">Sign Up</a></p>   
-    {% else %}    
-        <a href="{% url "account:logout" %}" class="button light"> Log out </a>           
-    {% endif %}
+<html lang="rus">
+{% load static %}
 
-<div id="subheader">
-    <div class="cart">
-        {% with total_items=cart|length %}
-            {% if cart|length > 0 %}
+<head title="My car showroom">
+    <meta charset="utf-8" name="description"
+        content="Best Belarusian Car Showroom ever created. You can find here anything you want!" />
+    <title>{% block title %}My shop{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static '/img/icon.png'%}">
+</head>
+
+<body>
+    <header id="header">
+        <img src="{% static 'img/icon.png'%}" class="company-icon" width="25" height="25">
+        <a href="/" class="title-text">Car Showroom</a>
+        {% if user.is_authenticated %}
+        {% if user.is_staff %}
+        <div>
+            <a href="{% url 'showroom:product_create' %}" class="shadowtext">Добавить продукт</a>
+        </div>
+        {% endif %}
+        {% endif %}
+        <nav id="nav">
+            {% if user.is_superuser %}
+            <a href="{% url 'showroom:statistics' %}" class="shadowtext">STATISTICS</a>
+            {% endif %}
+            {% if not user.is_authenticated %}
+            <a href="{% url 'account:login' %}" class="shadowtext"><b>Log in</b></a>
+            <a href="{% url 'account:register' %}" class="shadowtext"><b>Sign Up</b></a>
+            {% else %}
+            <a href="{% url 'account:logout' %}" class="shadowtext">Log out</a>
+            {% endif %}
+            <mark>
+                <p id="current-time" class="shadowtext"></p>
+            </mark>
+            <h2>
+                <a href="{% url 'information:about'%}" class="shadowtext">О компании</a>
+                <a href="{% url 'information:news' %}" class="shadowtext"> Новости</a>
+                <a href="{% url 'information:contacts' %}" class="shadowtext"> Контакты</a>
+                <a href="{% url 'information:qa' %}" class="shadowtext">QA</a>
+                <a href="{% url 'information:reviews' %}" class="shadowtext">Отзывы</a>
+                <a href="{% url 'information:promotions' %}" class="shadowtext">Промокоды и акции </a>
+                <a href="{% url 'information:privacy_policy' %}" class="shadowtext"><small>Политика
+                        конфиденциальности</small></a>
+                </h3>
+                {% with total_items=cart|length %}
+                {% if cart|length > 0 %}
                 Your cart:
-                <a href="{% url "cart:cart_detail" %}">
+                <a href="{% url 'cart:cart_detail' %}">
                     {{ total_items }} item{{ total_items|pluralize }},
                     ${{ cart.get_total_price }}
                 </a>
-            {% else %}
-                Your cart is empty.
-            {% endif %}
-        {% endwith %}
+                {% else %}
+                <em> Cart is empty!</em>
+                {% endif %}
+                {% endwith %}
+        </nav>
+    </header>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
     </div>
-</div>
-<div id="content">
-    {% block content %}
-    {% endblock %}
-</div>
 
-<script>
-    let time = document.getElementById('current-time');
 
-    setInterval(() => {
-        let d = new Date();
-        time.innerHTML = "Current date: " + d.toLocaleDateString() + " " + d.toLocaleTimeString();
-    }, 1000)
+    <footer class="footer">
+        <a href="https://av.by/" target="_blank">
+            <img class="round" src="{% static 'img/avby.png' %}" alt="Example 1" class="company-logo" />
+        </a>
+        <a href="https://atlantm.by/" target="_blank">
+            <img class="round" src="{% static 'img/atlantm.png' %}" alt="Example 2" class="company-logo" />
+        </a>
+        <p class="shadowtext footer-text">© 2023 Your Company. All rights reserved.</p>
+    </footer>
 
-</script>
+    <script>
+        let time = document.getElementById('current-time');
+        setInterval(() => {
+            let d = new Date();
+            time.innerHTML = "Current date: " + d.toLocaleDateString() + " " + d.toLocaleTimeString();
+        }, 1000)
+    </script>
+
+
 </body>
+
 </html>

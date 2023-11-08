@@ -1,0 +1,93 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+
+
+#header {
+    background-color: rgb(69, 66, 66);
+    /* Цвет фона (черный) */
+    color: white;
+    /* Цвет текста (белый) */
+    /* Внутренний отступ */
+    position: fixed;
+    /* Fix the position of the navigation bar */
+    top: 0;
+    /* Position it at the top of the viewport */
+    width: 100%;
+    padding: 10px;
+    /* Padding for the navigation bar */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow effect */
+    z-index: 100;
+    /* Ensure the navigation bar appears above other elements */
+}
+
+.title-text {
+    font-family: "Arial", sans-serif;
+    /* Шрифт для названия */
+    font-size: 24px;
+    /* Размер шрифта для названия */
+    font-weight: bold;
+    /* Жирное начертание для названия */
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    text-decoration: underline overline;
+    text-decoration-color: blue;
+    text-shadow: 2px 2px 7px blue;
+    font-kerning: normal;
+}
+
+.title-text:hover {
+    color: rgb(100, 95, 95);
+    /* Цвет текста при наведении на название */
+}
+
+.shadowtext {
+    text-shadow: 6px 6px 12px rgba(0, 70, 0, 0.5);
+    color: white;
+}
+
+.company-icon {
+    transform: rotate(45deg);
+}
+
+a {
+    text-decoration: none;
+}
+
+#nav a:hover {
+    color: rgb(110, 102, 102);
+    cursor: pointer;
+    /* Цвет текста при наведении на ссылки навигации */
+}
+
+.round {
+    border-radius: 100px;
+    border: 3px solid orangered;
+    box-shadow: 0 0 7px #666;
+    width: 50;
+    height: 50px;
+    margin: 50px, 50px, 50px, 50px;
+}
+
+.footer {
+    height: 120px;
+    background-color: rgb(69, 66, 66);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 20px;
+}
+
+.footer-text {
+    margin: 50px, 100px;
+    margin-left: auto;
+    text-shadow: 6px 6px 16px rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+content,
+body {
+    margin-top: 250px;
+    position: sticky;
+}

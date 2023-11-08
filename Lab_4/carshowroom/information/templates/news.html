@@ -1,0 +1,38 @@
+{% extends "showroom/base.html" %}
+{% load static %}
+
+{% block title %}
+News
+{% endblock %}
+
+{% block content %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/news.css' %}">
+{% endblock %}
+
+
+<body class="container">
+    <h1>Новости</h1>
+    <div class="articles-grid">
+        {% for article in articles %}
+        <section class="article">
+            <div class="card">
+                <img src="{{ article.image.url }}" class="card-img-top" width="450" height="280"
+                    alt="{{ article.title }}">
+                <div class="card-body">
+                    <h2 class="card-title">{{ article.title }}</h2>
+                    <article class="card-text">{{ article.summary }}</article>
+                    <details>
+                        <summary>Читать далее</summary>
+                        <div id="article">
+                            <p>{{ article.content }}</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}
