@@ -1,0 +1,64 @@
+{% extends "showroom/base.html" %}
+{% load static %}
+
+{% block title %}
+Table
+{% endblock %}
+
+{% block content %}
+<link href="{% static 'css/table.css' %}" rel="stylesheet">
+<div id="table-controls">
+    <label for="table-size">Размер таблицы: </label>
+    <input type="number" id="table-size" min="1">
+    <button id="create-table-button">Создать таблицу</button>
+</div>
+<div id="table-container">
+    <button id="transpose-button">Транспонировать</button>
+    <button id="add-row-button">Добавить ряд</button>
+    <button id="add-column-button">Добавить колонку</button>
+    <label for="max-selection">Макс. выбор ячеек в ряду/колонке: </label>
+    <input type="number" id="max-selection" min="1">
+    <table id="table"></table>
+</div>
+
+
+<div id="output"></div>
+
+<h1>Ассоциативный массив с данными о сотрудниках</h1>
+<pre id="arrayOutput"></pre>
+
+<h2>Добавить нового сотрудника</h2>
+<form onsubmit="event.preventDefault(); addEmployee();">
+    <label for="surname">Фамилия:</label>
+    <input type="text" id="surname" required><br>
+
+    <label for="name">Имя:</label>
+    <input type="text" id="name" required><br>
+
+    <label for="patronymic">Отчество:</label>
+    <input type="text" id="patronymic" required><br>
+
+    <label for="gender">Пол:</label>
+    <select id="gender" required>
+        <option value="мужской">Мужской</option>
+        <option value="женский">Женский</option>
+    </select><br>
+
+    <label for="experience">Стаж:</label>
+    <input type="number" id="experience" required><br>
+
+    <button type="submit">Добавить</button>
+</form>
+
+<select id="g" onchange="updateMostCommonNames();">
+    <option value="мужской">Мужской</option>
+    <option value="женский">Женский</option>
+</select>
+
+<div id="result"></div>
+
+
+<script type="text/javascript" src="{% static 'js/table.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/class.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/array.js' %}"></script>
+{% endblock %}

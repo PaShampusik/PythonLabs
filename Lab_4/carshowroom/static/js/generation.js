@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             if (backgroundColorInput) {
                 form.removeChild(backgroundColorInput.parentElement);
-                document.body.style.background = 'linear-gradient(to bottom, #222222, #000000)';
+                document.body.style.backgroundColor = '#ffffff';
             }
         }
     });

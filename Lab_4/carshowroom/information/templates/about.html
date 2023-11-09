@@ -12,7 +12,13 @@ About
 {% endblock %}
 
 <body class="container">
+    <h1>Проверка возраста</h1>
 
+    <label for="dob">Введите дату рождения:</label>
+    <input type="date" id="dob">
+    <button onclick="checkAge()">Проверить</button>
+
+    <div id="result"></div>
     <div class="row">
         <h2>Информация о компании</h2>
         <p>Проект, созданный в <dfn title="Белорусский Государственный Университет Информатики и радиоэлектроники">БГУИР
@@ -159,4 +165,6 @@ About
 </body>
 
 <script type="text/javascript" src="{% static 'js/card.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/age.js' %}"></script>
+
 {% endblock %}

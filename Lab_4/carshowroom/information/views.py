@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseNotFound, JsonResponse
 from .models import Review, Promotion, Review, FAQ, Article, Employee
 from django import forms
 
@@ -20,6 +21,11 @@ class ReviewListView(ListView):
     template_name = "reviews.html"
     context_object_name = "reviews"
     paginate_by = 10
+
+
+class TableView(ListView):
+    def get(self, request):
+        return render(request, "table.html")
 
 
 class AddReviewView(LoginRequiredMixin, View):
@@ -50,6 +56,15 @@ class PromotionsView(View):
         }
 
         return render(request, "promotions.html", context)
+
+
+class CheckPromotionsView(View):
+    def get(self, request, promo):
+        promo = Promotion.objects.filter(code=promo).first()
+        if promo is not None and promo.is_active:
+            return JsonResponse(data={"valid": True, "description": promo.description})
+        else:
+            return HttpResponseNotFound()
 
 
 class QAView(View):
@@ -106,7 +121,8 @@ def save_review(request):
         user = None
         if request and hasattr(request, "user"):
             user = request.user
-        review = Review.objects.create(text=text, rating=rating, user=user, name=name)
+        review = Review.objects.create(
+            text=text, rating=rating, user=user, name=name)
 
         return redirect("information:reviews")
 
