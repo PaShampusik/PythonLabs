@@ -6,13 +6,18 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var mongoose = require("mongoose");
 
 var app = express();
 
 //Устанавливаем соединение с mongoose
-var mongoose = require("mongoose");
 var mongoDB = "mongodb+srv://shchirovpavel:336314010257651758@cluster0.srplokx.mongodb.net/?retryWrites=true&w=majority";
-mongoose.connect(mongoDB);
+try {
+  mongoose.connect(mongoDB);
+  console.log('DB is connected!')
+} catch (error) {
+  console.log(error)
+}
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
